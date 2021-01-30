@@ -13,6 +13,6 @@ export const LayoutPlayers = ({ children }) => (
   <div className="layout__players">{children}</div>
 );
 
-export const LayoutStatus = ({ children }) => (
-  <div className="layout__status">{children}</div>
+export const LayoutMetrics = ({ children }) => (
+  <div className="layout__metrics">{children}</div>
 );

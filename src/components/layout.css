@@ -4,7 +4,7 @@
   grid-template-rows: auto 100px;
   grid-template-areas:
     'board players'
-    'status status';
+    'metrics metrics';
   width: 100vw;
   height: 100vh;
   background-color: var(--black-90);
@@ -13,13 +13,16 @@
 .layout__board {
   grid-area: board;
   border-right: 1px solid var(--white-10);
+  display: grid;
 }
 
 .layout__players {
   grid-area: players;
+  display: grid;
 }
 
-.layout__status {
+.layout__metrics {
   border-top: 1px solid var(--white-10);
-  grid-area: status;
+  grid-area: metrics;
+  display: grid;
 }

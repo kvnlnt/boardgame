@@ -1,4 +1,3 @@
-import './players.css';
 import React from 'react';
 import { Player } from '~/entities/Player';
 
@@ -7,10 +6,14 @@ export interface PlayersProps {
 }
 
 export const Players = ({ players }: PlayersProps) => (
-  <div className="players">
-    {players.map((player) => (
-      <div className="player">
-        <div className="player__name">{player.name}</div>
+  <div className="cards--in-rows">
+    {players.map((player, idx) => (
+      <div
+        className={`card ${player.active && 'card--active'}`}
+        key={`player-${idx}`}
+      >
+        <div className="card__title">{player.name}</div>
+        <div className="card__body">{player.name}</div>
       </div>
     ))}
   </div>

@@ -1,31 +1,107 @@
 import './board.css';
 import React from 'react';
 import { Dice } from './dice';
+import { Card } from './Card';
+import { Player } from '~/entities/Player';
 
 export interface BoardProps {
+  title: string;
   onRoll: (number: number) => void;
+  dice: number;
+  players: Player[];
 }
 
-export const Board = ({ onRoll }: BoardProps) => (
+const Slot = ({ pos, players }: { pos: number; players: Player[] }) => (
+  <div>
+    {players.filter((player) => player.position === pos).map((i) => i.name)}
+  </div>
+);
+
+export const Board = ({ players, title, dice, onRoll }: BoardProps) => (
   <div className="board">
-    <div className="board__cell">1</div>
-    <div className="board__cell">2</div>
-    <div className="board__cell">3</div>
-    <div className="board__cell">4</div>
-    <div className="board__cell">5</div>
-    <div className="board__cell">6</div>
-    <div className="board__cell">7</div>
-    <div className="board__cell">8</div>
-    <div className="board__cell">9</div>
-    <div className="board__cell">10</div>
-    <div className="board__cell">11</div>
-    <div className="board__cell">12</div>
-    <div className="board__cell">13</div>
-    <div className="board__cell">14</div>
-    <div className="board__cell">15</div>
-    <div className="board__cell">16</div>
+    <div>
+      <Card name="1">
+        <Slot pos={1} players={players} />
+      </Card>
+    </div>
+    <div>
+      <Card name="2">
+        <Slot pos={2} players={players} />
+      </Card>
+    </div>
+    <div>
+      <Card name="3">
+        <Slot pos={3} players={players} />
+      </Card>
+    </div>
+    <div>
+      <Card name="4">
+        <Slot pos={4} players={players} />
+      </Card>
+    </div>
+    <div>
+      <Card name="5">
+        <Slot pos={5} players={players} />
+      </Card>
+    </div>
+    <div>
+      <Card name="16">
+        <Slot pos={16} players={players} />
+      </Card>
+    </div>
+    <div>
+      <Card name="6">
+        <Slot pos={6} players={players} />
+      </Card>
+    </div>
+    <div>
+      <Card name="15">
+        <Slot pos={15} players={players} />
+      </Card>
+    </div>
+    <div>
+      <Card name="7">
+        <Slot pos={7} players={players} />
+      </Card>
+    </div>
+    <div>
+      <Card name="14">
+        <Slot pos={14} players={players} />
+      </Card>
+    </div>
+    <div>
+      <Card name="8">
+        <Slot pos={8} players={players} />
+      </Card>
+    </div>
+    <div>
+      <Card name="13">
+        <Slot pos={13} players={players} />
+      </Card>
+    </div>
+    <div>
+      <Card name="12">
+        <Slot pos={12} players={players} />
+      </Card>
+    </div>
+    <div>
+      <Card name="11">
+        <Slot pos={11} players={players} />
+      </Card>
+    </div>
+    <div>
+      <Card name="10">
+        <Slot pos={10} players={players} />
+      </Card>
+    </div>
+    <div>
+      <Card name="9">
+        <Slot pos={9} players={players} />
+      </Card>
+    </div>
     <div className="board__center">
-      <Dice size={50} speed={50} onRoll={onRoll} />
+      <h1 className="board__title">{title}</h1>
+      <Dice face={dice} size={50} speed={50} onRoll={onRoll} />
     </div>
   </div>
 );

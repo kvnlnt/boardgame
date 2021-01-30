@@ -4,10 +4,11 @@ import React, { useRef, useEffect } from 'react';
 interface DiceProps {
   size: number;
   speed: number;
-  onRoll: (number: number) => number;
+  onRoll: (number: number) => any;
+  face: number;
 }
 
-export const Dice = ({ size, speed, onRoll }: DiceProps) => {
+export const Dice = ({ face, size, speed, onRoll }: DiceProps) => {
   const cubeRef = useRef();
   const scale = size / 100;
   let cube;
@@ -17,14 +18,13 @@ export const Dice = ({ size, speed, onRoll }: DiceProps) => {
   let animationFrame;
   const randRange = (min, max) => Math.random() * (max - min) + min;
   const faceDegrees = [
-    [0, 0],
-    [0, 90],
-    [90, 0],
-    [180, 0],
-    [0, -90],
-    [-90, 0],
+    [20, 20],
+    [20, 110],
+    [110, 20],
+    [200, 20],
+    [20, -110],
+    [-110, 20],
   ];
-  const randomFace = faceDegrees[Math.floor(randRange(0, 6))];
 
   useEffect(() => {
     cube = cubeRef.current;
@@ -48,8 +48,10 @@ export const Dice = ({ size, speed, onRoll }: DiceProps) => {
   }
 
   function startAnimation() {
+    if (rolling) return;
     rolling = true;
     requestAnimationFrame(animate);
+    setTimeout(stopAnimation, 1000);
   }
 
   return (
@@ -61,12 +63,11 @@ export const Dice = ({ size, speed, onRoll }: DiceProps) => {
         className="cube"
         ref={cubeRef}
         style={{
-          transform: `rotateX(${randomFace[0]}deg) rotateY(${randomFace[1]}deg)`,
+          transform: `rotateX(${faceDegrees[face - 1][0]}deg) rotateY(${
+            faceDegrees[face - 1][1]
+          }deg)`,
         }}
         onMouseDown={startAnimation}
-        onMouseUp={stopAnimation}
-        onMouseOut={stopAnimation}
-        onMouseOver={stopAnimation}
       >
         <div className="face face__one">
           <svg height="20" width="20">

@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "parcel ./src/index.html"
+    "start": "parcel ./src/index.html",
+    "clean": "rm -rf .cache dist node_modules"
   },
   "author": "",
   "description": "",

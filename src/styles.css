@@ -10,6 +10,7 @@ body {
   --black-80: rgba(0, 0, 0, 0.8);
   --black-90: rgba(0, 0, 0, 0.9);
   --white: rgba(255, 255, 255, 1);
+  --white-05: rgba(255, 255, 255, 0.05);
   --white-10: rgba(255, 255, 255, 0.1);
   --white-20: rgba(255, 255, 255, 0.2);
   --white-30: rgba(255, 255, 255, 0.3);
@@ -17,4 +18,13 @@ body {
   --white-50: rgba(255, 255, 255, 0.5);
   --white-60: rgba(255, 255, 255, 0.6);
   --white-70: rgba(255, 255, 255, 0.7);
+  --space: 10px;
+}
+
+.--m {
+  margin: var(--space);
+}
+
+.--p {
+  padding: var(--space);
 }

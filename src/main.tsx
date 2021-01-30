@@ -1,32 +1,37 @@
-import './main.css';
+import './styles.css';
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import {
   Layout,
   LayoutBoard,
   LayoutPlayers,
-  LayoutStatus,
+  LayoutMetrics,
 } from './components/Layout';
 import { Board } from './components/Board';
-import { Status } from './components/Status';
+import { Metrics } from './components/Metrics';
 import { Players } from './components/Players';
 import { Player } from './entities/Player';
 
 const App = () => {
-  const [currentPlayer, setCurrentPlayer] = useState<number>(0);
-  const [players, setPlayers] = useState<Player[]>([
-    new Player({ name: 'Kevin' }),
+  const [players] = useState<Player[]>([
+    new Player({ name: 'Kevin', active: true, position: 1 }),
+    new Player({ name: 'Lincoln', position: 15 }),
   ]);
-  const [player, setPlayer] = useState<Player>(players[currentPlayer]);
-  const [dice, setDice] = useState<number>(0);
+  const [player] = useState<Player>(players[0]);
+  const [dice, setDice] = useState<number>(6);
   return (
     <Layout>
       <LayoutBoard>
-        <Board onRoll={(number: number) => setDice(number)} />
+        <Board
+          title="Boardgame"
+          dice={dice}
+          onRoll={(number: number) => setDice(number)}
+          players={players}
+        />
       </LayoutBoard>
-      <LayoutStatus>
-        <Status dice={dice} player={player} />
-      </LayoutStatus>
+      <LayoutMetrics>
+        <Metrics dice={dice} player={player} />
+      </LayoutMetrics>
       <LayoutPlayers>
         <Players players={players} />
       </LayoutPlayers>
