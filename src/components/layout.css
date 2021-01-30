@@ -1,0 +1,25 @@
+.layout {
+  display: grid;
+  grid-template-columns: auto 200px;
+  grid-template-rows: auto 100px;
+  grid-template-areas:
+    'board players'
+    'status status';
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--black-90);
+}
+
+.layout__board {
+  grid-area: board;
+  border-right: 1px solid var(--white-10);
+}
+
+.layout__players {
+  grid-area: players;
+}
+
+.layout__status {
+  border-top: 1px solid var(--white-10);
+  grid-area: status;
+}
