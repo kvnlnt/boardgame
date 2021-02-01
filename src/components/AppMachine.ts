@@ -1,40 +1,30 @@
 import { Player } from '../entities/Player';
-import { assign, Machine } from 'xstate';
+import {
+  assign,
+  createMachine,
+  Event,
+  EventData,
+  SingleOrArray,
+  State,
+} from 'xstate';
 
-interface Schema {
-  states: {
-    gameSetup: {
-      states: {
-        configure: {};
-        start: {};
-      };
-    };
-    gamePlay: {
-      states: {
-        playerRollPrompt: {};
-        playerRolling: {};
-        playerMoving: {};
-        playerActionPrompt: {};
-        playerActionResult: {};
-      };
-    };
-    gameEnd: {
-      states: {
-        result: {};
-      };
-    };
-  };
-}
-
-type Events = { type: 'GAME_START' } | { type: 'DICE_ROLL'; number: number };
-
-interface Context {
+export interface AppContext {
   gameDice: number;
   gamePlayers: Player[];
   gameInProgress: boolean;
+  screen: 'gameSetup' | 'gamePlay' | 'gameEnd';
 }
 
-export const AppMachine = Machine<Context, Schema, Events>({
+export type AppEvents =
+  | { type: 'GAME_START' }
+  | { type: 'DICE_ROLL'; number: number };
+
+export type AppState =
+  | { value: 'gameSetup'; context: AppContext }
+  | { value: 'gamePlay'; context: AppContext }
+  | { value: 'gameEnd'; context: AppContext };
+
+export const AppMachine = createMachine<AppContext, AppEvents, AppState>({
   id: 'machine',
   initial: 'gameSetup',
   context: {
@@ -44,9 +34,16 @@ export const AppMachine = Machine<Context, Schema, Events>({
       new Player({ name: 'Lincoln', position: 15 }),
     ],
     gameInProgress: false,
+    screen: 'gameSetup',
   },
   states: {
     gameSetup: {
+      initial: 'config',
+      states: {
+        config: {},
+      },
+    },
+    gamePlay: {
       on: {
         DICE_ROLL: {
           target: 'gameSetup',
@@ -56,7 +53,13 @@ export const AppMachine = Machine<Context, Schema, Events>({
         },
       },
     },
-    gamePlay: {},
     gameEnd: {},
   },
 });
+
+export type UseHookStateType = State<AppContext, AppEvents, any, AppState>;
+
+export type UseHookSendType = (
+  event: SingleOrArray<Event<AppEvents>>,
+  payload?: EventData
+) => State<AppContext, AppEvents, any, AppState>;
