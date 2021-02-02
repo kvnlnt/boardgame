@@ -21,6 +21,11 @@ body {
   --space: 10px;
 }
 
+button {
+  cursor: pointer;
+  border: 0px;
+}
+
 .--m {
   margin: var(--space);
 }

@@ -4,7 +4,7 @@
   grid-template-rows: auto 100px;
   grid-template-areas:
     "board players"
-    "metrics metrics";
+    "metrics menu";
   width: 100vw;
   height: 100vh;
   background-color: var(--black-90);
@@ -25,4 +25,12 @@
   border-top: 1px solid var(--white-10);
   grid-area: metrics;
   display: grid;
+}
+
+.game_play__menu {
+  border-top: 1px solid var(--white-10);
+  grid-area: menu;
+  display: grid;
+  justify-content: center;
+  align-items: center;
 }

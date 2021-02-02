@@ -17,6 +17,7 @@ export interface AppContext {
 
 export type AppEvents =
   | { type: "GAME_START"; screen: string }
+  | { type: "GAME_SETUP"; screen: string }
   | { type: "DICE_ROLL"; number: number };
 
 export type AppState =
@@ -26,7 +27,7 @@ export type AppState =
 
 export const AppMachine = createMachine<AppContext, AppEvents, AppState>({
   id: "machine",
-  initial: "gameSetup",
+  initial: "gamePlay",
   context: {
     gameDice: 1,
     gamePlayers: [
@@ -34,7 +35,7 @@ export const AppMachine = createMachine<AppContext, AppEvents, AppState>({
       new Player({ name: "Lincoln", position: 15 }),
     ],
     gameInProgress: false,
-    screen: "gameSetup",
+    screen: "gamePlay",
   },
   states: {
     gameSetup: {
@@ -47,6 +48,10 @@ export const AppMachine = createMachine<AppContext, AppEvents, AppState>({
     },
     gamePlay: {
       on: {
+        GAME_SETUP: {
+          target: "gameSetup",
+          actions: assign({ screen: (_) => "gameSetup" }),
+        },
         DICE_ROLL: {
           target: "gameSetup",
           actions: assign({

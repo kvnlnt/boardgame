@@ -6,12 +6,17 @@ import { GameSetup } from "./screens/GameSetup";
 
 export const App = () => {
   const [state, send] = useMachine(AppMachine, {});
+  let screen;
   switch (state.context.screen) {
     case "gameSetup":
-      return <GameSetup state={state} send={send} />;
+      screen = <GameSetup state={state} send={send} />;
+      break;
     case "gamePlay":
-      return <GamePlay state={state} send={send} />;
+      screen = <GamePlay state={state} send={send} />;
+      break;
     case "gameEnd":
-      return "gameEnd";
+      screen = "gameEnd";
+      break;
   }
+  return screen;
 };

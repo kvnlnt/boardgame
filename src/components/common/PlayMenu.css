@@ -1,0 +1,9 @@
+.play_menu__button {
+  color: var(--white);
+  font-size: 40px;
+  background-color: transparent;
+}
+
+.play_menu__button:hover {
+  opacity: 0.5;
+}
