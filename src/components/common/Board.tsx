@@ -1,11 +1,11 @@
-import './board.css';
-import React from 'react';
-import { Dice } from './dice';
-import { Card } from './Card';
-import { Player } from '~/entities/Player';
+import "./Board.css";
+import React from "react";
+import { Dice } from "./dice";
+import { Card } from "./Card";
+import { Player } from "~/entities/Player";
+import { Logo } from "./Logo";
 
 export interface BoardProps {
-  title: string;
   onRoll: (number: number) => void;
   dice: number;
   players: Player[];
@@ -17,7 +17,7 @@ const Slot = ({ pos, players }: { pos: number; players: Player[] }) => (
   </div>
 );
 
-export const Board = ({ players, title, dice, onRoll }: BoardProps) => (
+export const Board = ({ players, dice, onRoll }: BoardProps) => (
   <div className="board">
     <div>
       <Card name="1">
@@ -100,7 +100,7 @@ export const Board = ({ players, title, dice, onRoll }: BoardProps) => (
       </Card>
     </div>
     <div className="board__center">
-      <h1 className="board__title">{title}</h1>
+      <Logo />
       <Dice face={dice} size={50} speed={50} onRoll={onRoll} />
     </div>
   </div>

@@ -1,14 +1,9 @@
-import React from 'react';
-import { Board } from '../common/Board';
-import { Metrics } from '../common/Metrics';
-import { Players } from '../common/Players';
-import {
-  Layout,
-  LayoutBoard,
-  LayoutMetrics,
-  LayoutPlayers,
-} from '../layouts/Layout';
-import { UseHookSendType, UseHookStateType } from '../AppMachine';
+import "./GamePlay.css";
+import React from "react";
+import { Board } from "../common/Board";
+import { Metrics } from "../common/Metrics";
+import { Players } from "../common/Players";
+import { UseHookSendType, UseHookStateType } from "../AppMachine";
 
 interface GamePlayOptions {
   state: UseHookStateType;
@@ -16,23 +11,22 @@ interface GamePlayOptions {
 }
 
 export const GamePlay = ({ state, send }: GamePlayOptions) => (
-  <Layout>
-    <LayoutBoard>
+  <div className="game_play">
+    <div className="game_play__board">
       <Board
-        title="Boardgame"
         dice={state.context.gameDice}
-        onRoll={(number: number) => send({ type: 'DICE_ROLL', number })}
+        onRoll={(number: number) => send({ type: "DICE_ROLL", number })}
         players={state.context.gamePlayers}
       />
-    </LayoutBoard>
-    <LayoutMetrics>
+    </div>
+    <div className="game_play__players">
+      <Players players={state.context.gamePlayers} />
+    </div>
+    <div className="game_play__metrics">
       <Metrics
         dice={state.context.gameDice}
         player={state.context.gamePlayers.find((p) => p.active)}
       />
-    </LayoutMetrics>
-    <LayoutPlayers>
-      <Players players={state.context.gamePlayers} />
-    </LayoutPlayers>
-  </Layout>
+    </div>
+  </div>
 );

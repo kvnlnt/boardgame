@@ -1,0 +1,22 @@
+.game_setup {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 100px auto;
+  grid-template-areas:
+    "header"
+    "content";
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--black-90);
+}
+
+.game_setup__header {
+  grid-area: header;
+  border-right: 1px solid var(--white-10);
+  display: grid;
+}
+
+.game_setup__content {
+  grid-area: content;
+  display: grid;
+}

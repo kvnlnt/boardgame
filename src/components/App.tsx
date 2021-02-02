@@ -1,25 +1,17 @@
-import React from 'react';
-import {
-  Layout,
-  LayoutBoard,
-  LayoutPlayers,
-  LayoutMetrics,
-} from './layouts/Layout';
-import { Board } from './common/Board';
-import { Metrics } from './common/Metrics';
-import { Players } from './common/Players';
-import { useMachine } from '@xstate/react';
-import { AppMachine } from './AppMachine';
-import { GamePlay } from './screens/GamePlay';
+import React from "react";
+import { useMachine } from "@xstate/react";
+import { AppMachine } from "./AppMachine";
+import { GamePlay } from "./screens/GamePlay";
+import { GameSetup } from "./screens/GameSetup";
 
 export const App = () => {
   const [state, send] = useMachine(AppMachine, {});
   switch (state.context.screen) {
-    case 'gameSetup':
-      return 'setup';
-    case 'gamePlay':
+    case "gameSetup":
+      return <GameSetup state={state} send={send} />;
+    case "gamePlay":
       return <GamePlay state={state} send={send} />;
-    case 'gameEnd':
-      return 'gameEnd';
+    case "gameEnd":
+      return "gameEnd";
   }
 };

@@ -1,4 +1,4 @@
-import { Player } from '../entities/Player';
+import { Player } from "../entities/Player";
 import {
   assign,
   createMachine,
@@ -6,47 +6,49 @@ import {
   EventData,
   SingleOrArray,
   State,
-} from 'xstate';
+} from "xstate";
 
 export interface AppContext {
   gameDice: number;
   gamePlayers: Player[];
   gameInProgress: boolean;
-  screen: 'gameSetup' | 'gamePlay' | 'gameEnd';
+  screen: "gameSetup" | "gamePlay" | "gameEnd";
 }
 
 export type AppEvents =
-  | { type: 'GAME_START' }
-  | { type: 'DICE_ROLL'; number: number };
+  | { type: "GAME_START"; screen: string }
+  | { type: "DICE_ROLL"; number: number };
 
 export type AppState =
-  | { value: 'gameSetup'; context: AppContext }
-  | { value: 'gamePlay'; context: AppContext }
-  | { value: 'gameEnd'; context: AppContext };
+  | { value: "gameSetup"; context: AppContext }
+  | { value: "gamePlay"; context: AppContext }
+  | { value: "gameEnd"; context: AppContext };
 
 export const AppMachine = createMachine<AppContext, AppEvents, AppState>({
-  id: 'machine',
-  initial: 'gameSetup',
+  id: "machine",
+  initial: "gameSetup",
   context: {
     gameDice: 1,
     gamePlayers: [
-      new Player({ name: 'Kevin', active: true, position: 2 }),
-      new Player({ name: 'Lincoln', position: 15 }),
+      new Player({ name: "Kevin", active: true, position: 2 }),
+      new Player({ name: "Lincoln", position: 15 }),
     ],
     gameInProgress: false,
-    screen: 'gameSetup',
+    screen: "gameSetup",
   },
   states: {
     gameSetup: {
-      initial: 'config',
-      states: {
-        config: {},
+      on: {
+        GAME_START: {
+          target: "gamePlay",
+          actions: assign({ screen: (_) => "gamePlay" }),
+        },
       },
     },
     gamePlay: {
       on: {
         DICE_ROLL: {
-          target: 'gameSetup',
+          target: "gameSetup",
           actions: assign({
             gameDice: (_, event) => event.number,
           }),

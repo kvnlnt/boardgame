@@ -1,5 +1,5 @@
-import './dice.css';
-import React, { useRef, useEffect } from 'react';
+import "./Dice.css";
+import React, { useRef, useEffect } from "react";
 
 interface DiceProps {
   size: number;
