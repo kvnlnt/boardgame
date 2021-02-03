@@ -1,6 +1,7 @@
-import "./SetupMenu.css";
-import React from "react";
-import { Text } from "./Text";
+import './SetupMenu.css';
+import React from 'react';
+import { Text } from './Text';
+import TestIds from '../../lib/TestIds';
 
 interface SetupMenuProps {
   onReady: () => void;
@@ -8,6 +9,8 @@ interface SetupMenuProps {
 
 export const SetupMenu = ({ onReady }: SetupMenuProps) => (
   <div className="menu">
-    <button onClick={onReady}>{Text("ready")}</button>
+    <button data-test-id={TestIds.button_ready} onClick={onReady}>
+      {Text('ready')}
+    </button>
   </div>
 );

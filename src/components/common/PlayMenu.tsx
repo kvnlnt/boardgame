@@ -1,5 +1,6 @@
-import "./PlayMenu.css";
-import React from "react";
+import './PlayMenu.css';
+import React from 'react';
+import TestIds from '../../lib/TestIds';
 
 interface PlayMenuProps {
   onSettingsClick: () => void;
@@ -7,7 +8,11 @@ interface PlayMenuProps {
 
 export const PlayMenu = ({ onSettingsClick }: PlayMenuProps) => (
   <div className="play_menu">
-    <button className="play_menu__button" onClick={onSettingsClick}>
+    <button
+      data-test-id={TestIds.button_settings}
+      className="play_menu__button"
+      onClick={onSettingsClick}
+    >
       ⚙
     </button>
   </div>

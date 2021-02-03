@@ -1,3 +1,3 @@
 export default {
-  ready: "Ready",
+  ready: 'Ready',
 };
