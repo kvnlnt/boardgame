@@ -9,7 +9,7 @@ interface PlayMenuProps {
 export const PlayMenu = ({ onSettingsClick }: PlayMenuProps) => (
   <div className="play_menu">
     <button
-      data-test-id={TestIds.button_settings}
+      data-testid={TestIds.button_settings}
       className="play_menu__button"
       onClick={onSettingsClick}
     >

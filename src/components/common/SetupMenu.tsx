@@ -9,7 +9,7 @@ interface SetupMenuProps {
 
 export const SetupMenu = ({ onReady }: SetupMenuProps) => (
   <div className="menu">
-    <button data-test-id={TestIds.button_ready} onClick={onReady}>
+    <button data-testid={TestIds.button_ready} onClick={onReady}>
       {Text('ready')}
     </button>
   </div>

@@ -1,7 +1,7 @@
 import { Player } from '../entities/Player';
 import {
   assign,
-  createMachine,
+  Machine,
   Event,
   EventData,
   SingleOrArray,
@@ -21,10 +21,13 @@ export type AppEvents =
   | { type: 'GAME_SETUP'; screen: string }
   | { type: 'DICE_ROLL'; number: number };
 
-export type AppSchema =
-  | { value: 'gameSetup'; context: AppContext }
-  | { value: 'gamePlay'; context: AppContext }
-  | { value: 'gameEnd'; context: AppContext };
+export type AppSchema = {
+  states: {
+    gameSetup: {};
+    gamePlay: {};
+    gameEnd: {};
+  };
+};
 
 export const AppMachineConfig: MachineConfig<
   AppContext,
@@ -48,11 +51,6 @@ export const AppMachineConfig: MachineConfig<
           target: 'gamePlay',
         },
       },
-      meta: {
-        test: async (page) => {
-          await page.waitFor(`data-test-id=["${TestIds.button_ready}"]`);
-        },
-      },
     },
     gamePlay: {
       on: {
@@ -71,11 +69,11 @@ export const AppMachineConfig: MachineConfig<
   },
 };
 
-export const AppMachine = createMachine(AppMachineConfig);
+export const AppMachine = Machine(AppMachineConfig);
 
-export type UseHookStateType = State<AppContext, AppEvents, any, AppSchema>;
+export type UseHookStateType = State<AppContext, AppEvents, AppSchema>;
 
 export type UseHookSendType = (
   event: SingleOrArray<Event<AppEvents>>,
   payload?: EventData
-) => State<AppContext, AppEvents, any, AppSchema>;
+) => State<AppContext, AppEvents, AppSchema>;

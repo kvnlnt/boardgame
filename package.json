@@ -5,11 +5,14 @@
   "license": "MIT",
   "scripts": {
     "start": "parcel ./src/index.html",
-    "clean": "rm -rf .cache dist node_modules"
+    "clean": "rm -rf .cache dist node_modules",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "author": "",
   "description": "",
   "dependencies": {
+    "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@xstate/react": "^1.2.2",
     "@xstate/test": "^0.4.1",
@@ -17,6 +20,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.14.2",
+    "ts-jest": "^26.5.0",
     "xstate": "^4.16.0"
   },
   "devDependencies": {
