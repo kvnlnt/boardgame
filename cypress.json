@@ -1,0 +1,9 @@
+{
+  "reporter": "json",
+  "reporterOptions": {
+    "toConsole": true
+  },
+  "spec": "cypress/integration/**/*.js",
+  "record": false,
+  "video": false
+}

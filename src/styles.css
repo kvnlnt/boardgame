@@ -19,17 +19,43 @@ body {
   --white-60: rgba(255, 255, 255, 0.6);
   --white-70: rgba(255, 255, 255, 0.7);
   --space: 10px;
+  --red: rgba(255, 0, 0, 1);
 }
 
+form {
+  width: '100%';
+}
+
+fieldset {
+  border: 0px;
+  padding: 0;
+}
+
+fieldset + fieldset {
+  margin-top: 20;
+}
+
+label {
+  color: var(--white);
+  padding: 10px 0px;
+  display: block;
+}
+
+input,
+button {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  border: 0px;
+  font-size: 16px;
+  border-radius: 3px;
+}
+
+input[type='button'],
 button {
   cursor: pointer;
-  border: 0px;
 }
 
-.--m {
-  margin: var(--space);
-}
-
-.--p {
-  padding: var(--space);
+.text.error {
+  color: var(--red);
 }

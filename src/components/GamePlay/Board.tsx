@@ -1,9 +1,9 @@
-import "./Board.css";
-import React from "react";
-import { Dice } from "./dice";
-import { Card } from "./Card";
-import { Player } from "~/entities/Player";
-import { Logo } from "./Logo";
+import './Board.css';
+import React from 'react';
+import { Dice } from './dice';
+import { Card } from './Card';
+import { Player } from '~/entities/Player';
+import { Logo } from '../common/Logo';
 
 export interface BoardProps {
   onRoll: (number: number) => void;

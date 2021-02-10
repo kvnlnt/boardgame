@@ -1,33 +1,33 @@
-.game_play {
+.screen {
   display: grid;
   grid-template-columns: auto 200px;
   grid-template-rows: auto 100px;
   grid-template-areas:
-    "board players"
-    "metrics menu";
+    'board players'
+    'metrics menu';
   width: 100vw;
   height: 100vh;
   background-color: var(--black-90);
 }
 
-.game_play__board {
+.screen__board {
   grid-area: board;
   border-right: 1px solid var(--white-10);
   display: grid;
 }
 
-.game_play__players {
+.screen__players {
   grid-area: players;
   display: grid;
 }
 
-.game_play__metrics {
+.screen__metrics {
   border-top: 1px solid var(--white-10);
   grid-area: metrics;
   display: grid;
 }
 
-.game_play__menu {
+.screen__menu {
   border-top: 1px solid var(--white-10);
   grid-area: menu;
   display: grid;

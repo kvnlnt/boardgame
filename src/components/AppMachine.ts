@@ -8,7 +8,6 @@ import {
   State,
   MachineConfig,
 } from 'xstate';
-import TestIds from '../lib/TestIds';
 
 export interface AppContext {
   gameDice: number;
@@ -17,8 +16,10 @@ export interface AppContext {
 }
 
 export type AppEvents =
-  | { type: 'GAME_START'; screen: string }
+  | { type: 'ADD_PLAYER'; name: string }
   | { type: 'GAME_SETUP'; screen: string }
+  | { type: 'GAME_START'; screen: string }
+  | { type: 'GAME_END'; screen: string }
   | { type: 'DICE_ROLL'; number: number };
 
 export type AppSchema = {
@@ -50,6 +51,15 @@ export const AppMachineConfig: MachineConfig<
         GAME_START: {
           target: 'gamePlay',
         },
+        ADD_PLAYER: {
+          target: 'gameSetup',
+          actions: assign({
+            gamePlayers: (context, event) => [
+              ...context.gamePlayers,
+              new Player({ name: event.name, position: 1 }),
+            ],
+          }),
+        },
       },
     },
     gamePlay: {
@@ -57,6 +67,7 @@ export const AppMachineConfig: MachineConfig<
         GAME_SETUP: {
           target: 'gameSetup',
         },
+        GAME_END: 'gameEnd',
         DICE_ROLL: {
           target: 'gamePlay',
           actions: assign({

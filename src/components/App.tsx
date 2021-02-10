@@ -1,12 +1,11 @@
 import React from 'react';
 import { useMachine } from '@xstate/react';
 import { AppMachine } from './AppMachine';
-import { GamePlay } from './screens/GamePlay';
-import { GameSetup } from './screens/GameSetup';
+import { GamePlay } from './GamePlay/Screen';
+import { GameSetup } from './GameSetup/Screen';
 
 export const App = () => {
   const [state, send] = useMachine(AppMachine);
-  console.log(state);
   let screen;
   switch (state.value) {
     case 'gameSetup':
@@ -19,5 +18,5 @@ export const App = () => {
       screen = 'gameEnd';
       break;
   }
-  return screen;
+  return <div>{screen}</div>;
 };
