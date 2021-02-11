@@ -13,3 +13,4 @@ export const Metrics = ({ dice, player }: MetricsProps) => (
     {dice > 0 && <Card name="Roll">{dice}</Card>}
   </div>
 );
+const useStyles = (): { [key: string]: React.CSSProperties } => ({});

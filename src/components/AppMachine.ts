@@ -17,6 +17,7 @@ export interface AppContext {
 
 export type AppEvents =
   | { type: 'ADD_PLAYER'; name: string }
+  | { type: 'REMOVE_PLAYER'; name: string }
   | { type: 'GAME_SETUP'; screen: string }
   | { type: 'GAME_START'; screen: string }
   | { type: 'GAME_END'; screen: string }
@@ -39,10 +40,7 @@ export const AppMachineConfig: MachineConfig<
   initial: 'gameSetup',
   context: {
     gameDice: 1,
-    gamePlayers: [
-      new Player({ name: 'Kevin', active: true, position: 2 }),
-      new Player({ name: 'Lincoln', position: 15 }),
-    ],
+    gamePlayers: [],
     gameInProgress: false,
   },
   states: {
@@ -58,6 +56,15 @@ export const AppMachineConfig: MachineConfig<
               ...context.gamePlayers,
               new Player({ name: event.name, position: 1 }),
             ],
+          }),
+        },
+        REMOVE_PLAYER: {
+          target: 'gameSetup',
+          actions: assign({
+            gamePlayers: (context, event) =>
+              context.gamePlayers.filter(
+                (player) => player.name !== event.name
+              ),
           }),
         },
       },

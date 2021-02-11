@@ -18,3 +18,4 @@ export const Players = ({ players }: PlayersProps) => (
     ))}
   </div>
 );
+const useStyles = (): { [key: string]: React.CSSProperties } => ({});

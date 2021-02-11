@@ -1,5 +1,5 @@
-import "./Dice.css";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from 'react';
+import theme from '~/theme';
 
 interface DiceProps {
   size: number;
@@ -9,6 +9,7 @@ interface DiceProps {
 }
 
 export const Dice = ({ face, size, speed, onRoll }: DiceProps) => {
+  const style = useStyles();
   const cubeRef = useRef();
   const scale = size / 100;
   let cube;
@@ -33,7 +34,7 @@ export const Dice = ({ face, size, speed, onRoll }: DiceProps) => {
   function animate() {
     rotateX += Math.random() * speed;
     rotateY += Math.random() * speed;
-    cube.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    cube.style.transform = `rotateX(${rotateX}deg) rotateY($:{rotateY}deg)`;
     animationFrame = requestAnimationFrame(animate);
   }
 
@@ -44,7 +45,7 @@ export const Dice = ({ face, size, speed, onRoll }: DiceProps) => {
     const randomNumber = Math.floor(randRange(0, 6));
     const randomFace = faceDegrees[randomNumber];
     onRoll(randomNumber + 1);
-    cube.style.transform = `rotateX(${randomFace[0]}deg) rotateY(${randomFace[1]}deg)`;
+    cube.style.transform = `rotateX(${randomFace[0]}deg) rotateY($:{randomFace[1]}deg)`;
   }
 
   function startAnimation() {
@@ -55,39 +56,36 @@ export const Dice = ({ face, size, speed, onRoll }: DiceProps) => {
   }
 
   return (
-    <div
-      className="container"
-      style={{ transform: `scale(${scale},${scale})` }}
-    >
+    <div style={{ ...style.container, transform: `scale(${scale},${scale})` }}>
       <div
-        className="cube"
         ref={cubeRef}
         style={{
+          ...style.cube,
           transform: `rotateX(${faceDegrees[face - 1][0]}deg) rotateY(${
             faceDegrees[face - 1][1]
           }deg)`,
         }}
         onMouseDown={startAnimation}
       >
-        <div className="face face__one">
+        <div style={{ ...style.face, ...style.one }}>
           <svg height="20" width="20">
             <circle cx="10" cy="10" r="10" />
           </svg>
         </div>
-        <div className="face face__two">
+        <div style={{ ...style.face, ...style.two }}>
           <svg height="80" width="80">
             <circle cx="15" cy="15" r="10" />
             <circle cx="65" cy="65" r="10" />
           </svg>
         </div>
-        <div className="face face__three">
+        <div style={{ ...style.face, ...style.three }}>
           <svg height="80" width="80">
             <circle cx="15" cy="15" r="10" />
             <circle cx="40" cy="40" r="10" />
             <circle cx="65" cy="65" r="10" />
           </svg>
         </div>
-        <div className="face face__four">
+        <div style={{ ...style.face, ...style.four }}>
           <svg height="80" width="80">
             <circle cx="15" cy="15" r="10" />
             <circle cx="65" cy="65" r="10" />
@@ -95,7 +93,7 @@ export const Dice = ({ face, size, speed, onRoll }: DiceProps) => {
             <circle cx="15" cy="65" r="10" />
           </svg>
         </div>
-        <div className="face face__five">
+        <div style={{ ...style.face, ...style.five }}>
           <svg height="80" width="80">
             <circle cx="15" cy="15" r="10" />
             <circle cx="65" cy="65" r="10" />
@@ -104,7 +102,7 @@ export const Dice = ({ face, size, speed, onRoll }: DiceProps) => {
             <circle cx="15" cy="65" r="10" />
           </svg>
         </div>
-        <div className="face face__six">
+        <div style={{ ...style.face, ...style.six }}>
           <svg height="80" width="80">
             <circle cx="15" cy="15" r="10" />
             <circle cx="65" cy="65" r="10" />
@@ -118,3 +116,59 @@ export const Dice = ({ face, size, speed, onRoll }: DiceProps) => {
     </div>
   );
 };
+const useStyles = (): { [key: string]: React.CSSProperties } => ({
+  container: {
+    width: 100,
+    height: 100,
+    perspective: 2000,
+  },
+
+  cube: {
+    transformStyle: 'preserve-3d',
+    cursor: 'pointer',
+    width: '100%',
+    height: '100%',
+    position: 'relative',
+    animationDuration: '1s',
+    animationTimingFunction: 'linear',
+    animationIterationCount: '1',
+    animationFillMode: 'forwards',
+    transform: 'rotateX(20deg) rotateY(20deg)',
+  },
+
+  face: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: theme.white,
+    border: '2px solid rgba(0, 0, 0, 0.1)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+  },
+
+  one: {
+    transform: 'rotateX(0deg) translateZ(50px)',
+  },
+
+  two: {
+    transform: 'rotateY(-90deg) translateZ(50px)',
+  },
+
+  four: {
+    transform: 'rotateX(-180deg) translateZ(50px)',
+  },
+
+  three: {
+    transform: 'rotateX(-90deg) translateZ(50px)',
+  },
+
+  five: {
+    transform: 'rotateY(90deg) translateZ(50px)',
+  },
+
+  six: {
+    transform: 'rotateX(90deg) translateZ(50px)',
+  },
+});

@@ -15,24 +15,37 @@ interface GameSetupOptions {
 
 export const GameSetup = ({ state, send }: GameSetupOptions) => {
   const onReady = () => send('GAME_START');
-  const styles = useStyles();
+  const style = useStyles();
+  const handlePlayerFormSubmit = (player: Player) => {
+    send('ADD_PLAYER', player);
+  };
+  const handlePlayerRemoval = (player: Player) => {
+    send('REMOVE_PLAYER', player);
+  };
   return (
-    <div style={styles.screen}>
-      <div style={styles.header}>
+    <div style={style.screen}>
+      <div style={style.header}>
         <Logo />
         <Menu onReady={onReady} />
       </div>
-      <div style={styles.form}>
+      <div style={style.form}>
         <Typography text="addPlayer" size="big" />
-        <PlayerForm state={state} send={send}></PlayerForm>
+        <PlayerForm
+          players={state.context.gamePlayers}
+          onSubmit={handlePlayerFormSubmit}
+        ></PlayerForm>
       </div>
       {state.context.gamePlayers && (
-        <div style={styles.players}>
+        <div style={style.players}>
           <div style={{ marginBottom: 20 }}>
             <Typography text="players" size="big" />
           </div>
           {state.context.gamePlayers.map((player: Player) => (
-            <PlayerCard player={player} key={player.name} />
+            <PlayerCard
+              onRemove={handlePlayerRemoval}
+              player={player}
+              key={player.name}
+            />
           ))}
         </div>
       )}

@@ -4,23 +4,23 @@ import { Typography } from '../common/Typography';
 import { Box } from '../common/Box';
 import { Text } from '../common/Text';
 import { UseHookSendType, UseHookStateType } from '../AppMachine';
+import { Player } from '~/entities/Player';
 
 interface PlayerFormOptions {
-  state: UseHookStateType;
-  send: UseHookSendType;
+  players: Player[];
+  onSubmit: (data: Player) => void;
 }
 
-export const PlayerForm = ({ state, send }: PlayerFormOptions) => {
+export const PlayerForm = ({ players, onSubmit }: PlayerFormOptions) => {
   const { register, handleSubmit, errors, reset } = useForm();
-  const onSubmit = (data) => {
-    send('ADD_PLAYER', data);
+  const onFormSubmission = (data) => {
+    onSubmit(data);
     reset();
   };
-  const dupCheck = (name) =>
-    !state.context.gamePlayers.find((player) => player.name === name);
+  const dupCheck = (name) => !players.find((player) => player.name === name);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onFormSubmission)}>
       <Box>
         <fieldset>
           <label>{Text('name')}</label>

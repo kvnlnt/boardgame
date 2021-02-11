@@ -8,9 +8,9 @@ interface SetupMenuProps {
 }
 
 export const Menu = ({ onReady }: SetupMenuProps) => {
-  const styles = useStyles();
+  const style = useStyles();
   return (
-    <div style={styles.menu}>
+    <div style={style.menu}>
       <button data-testid={TestIds.button_ready} onClick={onReady}>
         {Text('play')}
       </button>
