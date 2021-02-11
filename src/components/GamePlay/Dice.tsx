@@ -34,7 +34,8 @@ export const Dice = ({ face, size, speed, onRoll }: DiceProps) => {
   function animate() {
     rotateX += Math.random() * speed;
     rotateY += Math.random() * speed;
-    cube.style.transform = `rotateX(${rotateX}deg) rotateY($:{rotateY}deg)`;
+    const transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    cube.style.transform = transform;
     animationFrame = requestAnimationFrame(animate);
   }
 
@@ -58,6 +59,7 @@ export const Dice = ({ face, size, speed, onRoll }: DiceProps) => {
   return (
     <div style={{ ...style.container, transform: `scale(${scale},${scale})` }}>
       <div
+        onClick={startAnimation}
         ref={cubeRef}
         style={{
           ...style.cube,
@@ -65,7 +67,6 @@ export const Dice = ({ face, size, speed, onRoll }: DiceProps) => {
             faceDegrees[face - 1][1]
           }deg)`,
         }}
-        onMouseDown={startAnimation}
       >
         <div style={{ ...style.face, ...style.one }}>
           <svg height="20" width="20">

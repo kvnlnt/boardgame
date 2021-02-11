@@ -45,6 +45,22 @@ export const PlayerForm = ({ players, onSubmit }: PlayerFormOptions) => {
           )}
         </fieldset>
         <fieldset>
+          <label>{Text('piece')}</label>
+          <select
+            name="piece"
+            ref={register({
+              required: true,
+            })}
+          >
+            <option>♔</option>
+            <option>♕</option>
+            <option>♖</option>
+            <option>♗</option>
+            <option>♘</option>
+            <option>♙</option>
+          </select>
+        </fieldset>
+        <fieldset style={{ marginTop: 20 }}>
           <input type="submit" value={Text('add')} />
         </fieldset>
       </Box>

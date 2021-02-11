@@ -3,19 +3,43 @@ import { Dice } from './dice';
 import { Card } from './Card';
 import { Player } from '~/entities/Player';
 import { Logo } from '../common/Logo';
+import theme from '~/theme';
+
+interface PieceOpts {
+  player: Player;
+}
+
+const Piece = ({ player }: PieceOpts) => {
+  const style = useStyles();
+  return (
+    <div
+      style={{ ...style.piece, ...(player.active ? style.pieceActive : {}) }}
+    >
+      {player.piece}
+    </div>
+  );
+};
+
+interface SlotOps {
+  pos: number;
+  players: Player[];
+}
+
+const Slot = ({ pos, players }: SlotOps) => (
+  <div>
+    {players
+      .filter((player) => player.position === pos)
+      .map((player) => (
+        <Piece player={player} key={player.name} />
+      ))}
+  </div>
+);
 
 export interface BoardProps {
   onRoll: (number: number) => void;
   dice: number;
   players: Player[];
 }
-
-const Slot = ({ pos, players }: { pos: number; players: Player[] }) => (
-  <div>
-    {players.filter((player) => player.position === pos).map((i) => i.name)}
-  </div>
-);
-
 export const Board = ({ players, dice, onRoll }: BoardProps) => {
   const style = useStyles();
   return (
@@ -122,5 +146,13 @@ const useStyles = (): { [key: string]: React.CSSProperties } => ({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
+  },
+  piece: {
+    fontSize: 24,
+    display: 'inline-block',
+    color: theme.white_30,
+  },
+  pieceActive: {
+    color: theme.white,
   },
 });

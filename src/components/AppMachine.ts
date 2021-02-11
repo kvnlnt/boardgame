@@ -31,16 +31,30 @@ export type AppSchema = {
   };
 };
 
+const startingPlayers = [
+  new Player({
+    name: 'Kevin',
+    position: 1,
+    active: true,
+    piece: '♔',
+  }),
+  new Player({ name: 'Lincoln', position: 1, piece: '♕' }),
+  new Player({ name: 'Jaymie', position: 1, piece: '♖' }),
+  new Player({ name: 'Sydnie', position: 1, piece: '♗' }),
+  new Player({ name: 'Luther', position: 1, piece: '♘' }),
+  new Player({ name: 'James', position: 1, piece: '♙' }),
+];
+
 export const AppMachineConfig: MachineConfig<
   AppContext,
   AppSchema,
   AppEvents
 > = {
   id: 'machine',
-  initial: 'gameSetup',
+  initial: 'gamePlay',
   context: {
     gameDice: 1,
-    gamePlayers: [],
+    gamePlayers: startingPlayers,
     gameInProgress: false,
   },
   states: {
