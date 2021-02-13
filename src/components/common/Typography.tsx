@@ -3,23 +3,23 @@ import React from 'react';
 import theme from '~/theme';
 
 type SizeTypes = 'normal' | 'small' | 'big' | 'huge';
-type StyleTypes = 'normal' | 'info' | 'warning' | 'error';
+type Moods = 'normal' | 'info' | 'warning' | 'error' | 'success';
 
 interface TypographyProps {
   text: keyof typeof l10n;
   size?: SizeTypes;
-  style?: StyleTypes;
+  mood?: Moods;
 }
 
 export const Typography = ({
   text,
   size = 'normal',
-  style = 'normal',
+  mood = 'normal',
 }: TypographyProps) => {
-  const styleType = useStyleType()[style];
+  const moodType = useStyleType()[mood];
   const sizeType = useSizeType()[size];
 
-  return <div style={{ ...styleType, ...sizeType }}>{l10n[text]}</div>;
+  return <div style={{ ...moodType, ...sizeType }}>{l10n[text]}</div>;
 };
 
 const useSizeType = (): {
@@ -39,7 +39,7 @@ const useSizeType = (): {
   },
 });
 
-const useStyleType = (): { [key in StyleTypes]: React.CSSProperties } => ({
+const useStyleType = (): { [key in Moods]: React.CSSProperties } => ({
   normal: {
     color: theme.white,
   },
@@ -51,5 +51,8 @@ const useStyleType = (): { [key in StyleTypes]: React.CSSProperties } => ({
   },
   error: {
     color: theme.red,
+  },
+  success: {
+    color: theme.green,
   },
 });

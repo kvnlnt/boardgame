@@ -21,6 +21,7 @@ export enum Transition {
   CHANGE_PLAYER_ORDER = 'CHANGE_PLAYER_ORDER',
   DICE_ROLL = 'DICE_ROLL',
   GAME_END = 'GAME_END',
+  GAME_READY = 'GAME_READY',
   GAME_SETUP = 'GAME_SETUP',
   GAME_START = 'GAME_START',
   REMOVE_PLAYER = 'REMOVE_PLAYER',
@@ -50,6 +51,7 @@ type TransitionChangePlayer = {
 };
 type TransitionDiceRoll = { type: Transition.DICE_ROLL; number: number };
 type TransitionGameSetup = { type: Transition.GAME_SETUP; screen: string };
+type TransitionGameReady = { type: Transition.GAME_READY; screen: string };
 type TransitionGameStart = { type: Transition.GAME_START; screen: string };
 type TransitionGameEnd = { type: Transition.GAME_END; screen: string };
 type TransitionSetActivePlayer = {
@@ -61,6 +63,7 @@ type AppTransitions =
   | TransitionAddPlayer
   | TransitionChangePlayer
   | TransitionDiceRoll
+  | TransitionGameReady
   | TransitionGameSetup
   | TransitionGameStart
   | TransitionGameEnd
@@ -70,6 +73,7 @@ type AppTransitions =
 type AppSchema = {
   states: {
     gameSetup: {};
+    gameReady: {};
     gamePlay: {};
     gameEnd: {};
   };
@@ -97,22 +101,35 @@ export const AppMachineConfig: MachineConfig<
     gameInProgress: false,
   },
   states: {
-    gameSetup: {
+    gameReady: {
       on: {
+        GAME_SETUP: {
+          target: 'gameSetup',
+        },
         GAME_START: {
           target: 'gamePlay',
         },
+      },
+    },
+    gameSetup: {
+      on: {
         ADD_PLAYER: {
           target: 'gameSetup',
           actions: [Action.addPlayer],
         },
-        REMOVE_PLAYER: {
-          target: 'gameSetup',
-          actions: [Action.removePlayer],
-        },
         CHANGE_PLAYER_ORDER: {
           target: 'gameSetup',
           actions: [Action.changePlayerOrder],
+        },
+        GAME_READY: {
+          target: 'gameReady',
+        },
+        GAME_START: {
+          target: 'gamePlay',
+        },
+        REMOVE_PLAYER: {
+          target: 'gameSetup',
+          actions: [Action.removePlayer],
         },
         SET_ACTIVE_PLAYER: {
           target: 'gameSetup',
@@ -122,14 +139,14 @@ export const AppMachineConfig: MachineConfig<
     },
     gamePlay: {
       on: {
-        GAME_SETUP: {
-          target: 'gameSetup',
-        },
-        GAME_END: 'gameEnd',
         DICE_ROLL: {
           target: 'gamePlay',
           actions: [Action.rollDice],
         },
+        GAME_SETUP: {
+          target: 'gameSetup',
+        },
+        GAME_END: 'gameEnd',
       },
     },
     gameEnd: {},

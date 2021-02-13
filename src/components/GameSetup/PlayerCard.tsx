@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Player } from '~/entities/Player';
 import theme from '~/theme';
-import { Button } from '../common/Button';
+import { Button, ButtonProps } from '../common/Button';
+import { ButtonList } from '../common/ButtonList';
 
 interface PlayerCardOpts {
   player: Player;
@@ -20,6 +21,15 @@ export const PlayerCard = ({
 }: PlayerCardOpts) => {
   const [hover, setHover] = useState<boolean>(false);
   const style = useStyles({ hover, active: player.active });
+  const buttons: ButtonProps[] = [];
+  if (moveUp) buttons.push({ onClick: () => moveUp(player), children: '↑' });
+  if (moveDown)
+    buttons.push({ onClick: () => moveDown(player), children: '↓' });
+  buttons.push({
+    mood: player.active ? 'disabled' : 'normal',
+    onClick: () => onRemove(player),
+    children: 'X',
+  });
   return (
     <div
       style={{
@@ -32,14 +42,7 @@ export const PlayerCard = ({
     >
       <div style={style.piece}>{player.piece}</div>
       <div style={style.title}>{player.name}</div>
-      {moveUp && <Button onClick={() => moveUp(player)}>↑</Button>}
-      {moveDown && <Button onClick={() => moveDown(player)}>↓</Button>}
-      <Button
-        mode={player.active ? 'disabled' : 'normal'}
-        onClick={() => onRemove(player)}
-      >
-        X
-      </Button>
+      <ButtonList buttons={buttons} />
     </div>
   );
 };

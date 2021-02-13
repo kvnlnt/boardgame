@@ -17,4 +17,5 @@ export default {
   white_70: 'rgba(255, 255, 255, 0.7)',
   space: 10,
   red: 'rgba(255, 0, 0, 1)',
+  green: 'rgba(0, 125, 0, 1)',
 };

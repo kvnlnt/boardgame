@@ -2,7 +2,7 @@ import React from 'react';
 import { Board } from './Board';
 import { Metrics } from './Metrics';
 import { Players } from './Players';
-import { UseHookSendType, UseHookStateType } from '../AppMachine';
+import { Transition, UseHookSendType, UseHookStateType } from '../AppMachine';
 import { PlayMenu } from './PlayMenu';
 import theme from '~/theme';
 
@@ -18,7 +18,9 @@ export const GamePlay = ({ state, send }: GamePlayOptions) => {
       <div style={style.board}>
         <Board
           dice={state.context.gameDice}
-          onRoll={(number: number) => send({ type: 'DICE_ROLL', number })}
+          onRoll={(number: number) =>
+            send({ type: Transition.DICE_ROLL, number })
+          }
           players={state.context.gamePlayers}
         />
       </div>
@@ -32,7 +34,7 @@ export const GamePlay = ({ state, send }: GamePlayOptions) => {
         />
       </div>
       <div style={style.menu}>
-        <PlayMenu onSettingsClick={() => send('GAME_SETUP')} />
+        <PlayMenu onSettingsClick={() => send(Transition.GAME_SETUP)} />
       </div>
     </div>
   );

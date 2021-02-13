@@ -3,15 +3,15 @@ import theme from '~/theme';
 
 type ButtonMode = 'normal' | 'normal_on_hover' | 'disabled';
 
-interface ButtonProps {
-  mode?: ButtonMode;
+export interface ButtonProps {
+  mood?: ButtonMode;
   onClick?: () => any;
   children: React.ReactNode;
-  type: 'button' | 'submit' | 'reset';
+  type?: 'button' | 'submit' | 'reset';
 }
 
 export const Button = ({
-  mode = 'normal',
+  mood = 'normal',
   onClick,
   children,
   type = 'button',
@@ -20,7 +20,7 @@ export const Button = ({
   const style = useStyles();
   const handleClick = (e) => {
     e.stopPropagation();
-    if (mode === 'disabled') return null;
+    if (mood === 'disabled') return null;
     if (onClick) onClick();
   };
   return (
@@ -28,7 +28,7 @@ export const Button = ({
       type={type}
       onMouseOver={() => setHover(true)}
       onMouseOut={() => setHover(false)}
-      style={{ ...style[mode], ...(hover ? style[mode + '_on_hover'] : {}) }}
+      style={{ ...style[mood], ...(hover ? style[mood + '_on_hover'] : {}) }}
       onClick={handleClick}
     >
       {children}
@@ -39,17 +39,24 @@ export const Button = ({
 const useStyles = (): { [key in ButtonMode]: React.CSSProperties } => ({
   normal: {
     width: 'max-content',
-    color: theme.white,
-    padding: 10,
+    color: theme.white_50,
+    padding: '5px 20px',
     backgroundColor: 'transparent',
+    border: `1px solid ${theme.white_20}`,
+    fontSize: 12,
   },
   normal_on_hover: {
-    color: theme.white_50,
+    color: theme.white,
+    backgroundColor: theme.white_05,
+    transition: 'all 0.5s',
+    border: `1px solid ${theme.white}`,
   },
   disabled: {
     width: 'max-content',
-    padding: 10,
-    backgroundColor: 'transparent',
     color: theme.white_20,
+    padding: '5px 20px',
+    backgroundColor: 'transparent',
+    border: `1px solid ${theme.white_10}`,
+    fontSize: 12,
   },
 });

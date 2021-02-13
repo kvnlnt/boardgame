@@ -3,16 +3,22 @@ import { useForm } from 'react-hook-form';
 import { Typography } from '../common/Typography';
 import { Box } from '../common/Box';
 import { Text } from '../common/Text';
-import { Player } from '~/entities/Player';
+import { Player, PlayerPieces } from '~/entities/Player';
 import { Button } from '../common/Button';
 
 interface PlayerFormOptions {
   players: Player[];
   onSubmit: (data: Player) => void;
+  pieces: string[];
 }
 
-export const PlayerForm = ({ players, onSubmit }: PlayerFormOptions) => {
+export const PlayerForm = ({
+  players,
+  onSubmit,
+  pieces,
+}: PlayerFormOptions) => {
   const { register, handleSubmit, errors, reset } = useForm();
+  const dupCheck = (name) => !players.find((player) => player.name === name);
   const onFormSubmission = (data) => {
     onSubmit({
       name: data.name,
@@ -22,20 +28,10 @@ export const PlayerForm = ({ players, onSubmit }: PlayerFormOptions) => {
     });
     reset();
   };
-  const dupCheck = (name) => !players.find((player) => player.name === name);
-  const pieces = ['♔', '♕', '♖', '♗', '♘', '♙'];
-  const usedPieces = players.map((player) => player.piece);
-  const availablePieces = pieces.filter((piece) => !usedPieces.includes(piece));
-
-  if (availablePieces.length === 0)
-    return (
-      <div style={{ margin: 20 }}>
-        <Typography text="maxPlayersConfigured" />
-      </div>
-    );
 
   return (
     <form onSubmit={handleSubmit(onFormSubmission)}>
+      <Typography text="addPlayer" size="big" />
       <Box>
         <fieldset>
           <label>{Text('name')}</label>
@@ -67,7 +63,7 @@ export const PlayerForm = ({ players, onSubmit }: PlayerFormOptions) => {
               required: true,
             })}
           >
-            {availablePieces.map((piece) => (
+            {pieces.map((piece) => (
               <option key={piece}>{piece}</option>
             ))}
           </select>

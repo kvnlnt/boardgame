@@ -1,3 +1,5 @@
+export const PlayerPieces = ['♔', '♕', '♖', '♗', '♘', '♙'];
+
 export interface PlayerProps {
   name: string;
   active: boolean;

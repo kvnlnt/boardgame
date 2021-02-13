@@ -4,7 +4,7 @@ import { Menu } from './Menu';
 import { Logo } from '../common/Logo';
 import { PlayerForm } from './PlayerForm';
 import { PlayerCard } from './PlayerCard';
-import { Player } from '~/entities/Player';
+import { Player, PlayerPieces } from '~/entities/Player';
 import theme from '../../theme';
 import { Typography } from '../common/Typography';
 
@@ -14,7 +14,7 @@ interface GameSetupOptions {
 }
 
 export const GameSetup = ({ state, send }: GameSetupOptions) => {
-  const onReady = () => send(Transition.GAME_START);
+  const onStart = () => send(Transition.GAME_START);
   const style = useStyles();
   const handlePlayerFormSubmit = (player: Player) =>
     send(Transition.ADD_PLAYER, player);
@@ -22,22 +22,33 @@ export const GameSetup = ({ state, send }: GameSetupOptions) => {
     send(Transition.REMOVE_PLAYER, player);
   const handleSetPlayerActive = (player: Player) =>
     send(Transition.SET_ACTIVE_PLAYER, { player });
-  const handleMove = (dir: 'up' | 'down', player: Player) => {
+  const handleMove = (dir: 'up' | 'down', player: Player) =>
     send(Transition.CHANGE_PLAYER_ORDER, { player, dir });
-  };
+  const handleGameReady = () => send(Transition.GAME_READY);
+  const usedPieces = state.context.gamePlayers.map((player) => player.piece);
+  const availablePieces = PlayerPieces.filter(
+    (piece) => !usedPieces.includes(piece)
+  );
   return (
     <div style={style.screen}>
       <div style={style.header}>
         <Logo />
-        <Menu onReady={onReady} />
+        {availablePieces.length === 0 && (
+          <div style={style.message}>
+            <Typography text="youAreReady" mood="success" />
+          </div>
+        )}
+        <Menu onStart={onStart} />
       </div>
-      <div style={style.form}>
-        <Typography text="addPlayer" size="big" />
-        <PlayerForm
-          players={state.context.gamePlayers}
-          onSubmit={handlePlayerFormSubmit}
-        ></PlayerForm>
-      </div>
+      {availablePieces.length > 0 && (
+        <div style={style.form}>
+          <PlayerForm
+            pieces={availablePieces}
+            players={state.context.gamePlayers}
+            onSubmit={handlePlayerFormSubmit}
+          ></PlayerForm>
+        </div>
+      )}
       {state.context.gamePlayers && (
         <div style={style.players}>
           <div style={{ marginBottom: 20 }}>
@@ -66,7 +77,7 @@ export const GameSetup = ({ state, send }: GameSetupOptions) => {
 const useStyles = (): { [key: string]: React.CSSProperties } => ({
   screen: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: 'auto 1fr',
     gridTemplateRows: 'min-content auto',
     gridTemplateAreas: `'header header' 'form players'`,
     width: '100vw',
@@ -78,10 +89,16 @@ const useStyles = (): { [key: string]: React.CSSProperties } => ({
     gridArea: 'header',
     display: 'flex',
     flexDirection: 'column',
-    margin: 20,
+    alignItems: 'center',
+    marginTop: 20,
+    marginLeft: 20,
+    marginRight: 20,
   },
   form: {
     gridArea: 'form',
+    margin: 20,
+  },
+  message: {
     margin: 20,
   },
   players: {

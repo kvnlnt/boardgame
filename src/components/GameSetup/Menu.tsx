@@ -1,23 +1,17 @@
 import React from 'react';
 import { Text } from '../common/Text';
-import TestIds from '../../lib/TestIds';
 import theme from '~/theme';
+import { Button } from '../common/Button';
 
 interface SetupMenuProps {
-  onReady: () => void;
+  onStart: () => void;
 }
 
-export const Menu = ({ onReady }: SetupMenuProps) => {
+export const Menu = ({ onStart }: SetupMenuProps) => {
   const style = useStyles();
   return (
     <div style={style.menu}>
-      <button
-        style={style.playButton}
-        data-testid={TestIds.button_ready}
-        onClick={onReady}
-      >
-        {Text('play')}
-      </button>
+      <Button onClick={onStart}>{Text('startGame')}</Button>
     </div>
   );
 };
@@ -28,10 +22,5 @@ const useStyles = (): { [key: string]: React.CSSProperties } => ({
     justifyContent: 'center',
     alignItems: 'center',
     color: theme.white,
-  },
-  playButton: {
-    backgroundColor: 'transparent',
-    fontSize: 24,
-    color: theme.white_30,
   },
 });
