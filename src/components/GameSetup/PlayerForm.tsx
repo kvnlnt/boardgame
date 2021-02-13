@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { Typography } from '../common/Typography';
 import { Box } from '../common/Box';
 import { Text } from '../common/Text';
-import { UseHookSendType, UseHookStateType } from '../AppMachine';
 import { Player } from '~/entities/Player';
+import { Button } from '../common/Button';
 
 interface PlayerFormOptions {
   players: Player[];
@@ -14,10 +14,25 @@ interface PlayerFormOptions {
 export const PlayerForm = ({ players, onSubmit }: PlayerFormOptions) => {
   const { register, handleSubmit, errors, reset } = useForm();
   const onFormSubmission = (data) => {
-    onSubmit(data);
+    onSubmit({
+      name: data.name,
+      position: 1,
+      piece: data.piece,
+      active: false,
+    });
     reset();
   };
   const dupCheck = (name) => !players.find((player) => player.name === name);
+  const pieces = ['♔', '♕', '♖', '♗', '♘', '♙'];
+  const usedPieces = players.map((player) => player.piece);
+  const availablePieces = pieces.filter((piece) => !usedPieces.includes(piece));
+
+  if (availablePieces.length === 0)
+    return (
+      <div style={{ margin: 20 }}>
+        <Typography text="maxPlayersConfigured" />
+      </div>
+    );
 
   return (
     <form onSubmit={handleSubmit(onFormSubmission)}>
@@ -52,16 +67,13 @@ export const PlayerForm = ({ players, onSubmit }: PlayerFormOptions) => {
               required: true,
             })}
           >
-            <option>♔</option>
-            <option>♕</option>
-            <option>♖</option>
-            <option>♗</option>
-            <option>♘</option>
-            <option>♙</option>
+            {availablePieces.map((piece) => (
+              <option key={piece}>{piece}</option>
+            ))}
           </select>
         </fieldset>
         <fieldset style={{ marginTop: 20 }}>
-          <input type="submit" value={Text('add')} />
+          <Button type="submit">{Text('add')} </Button>
         </fieldset>
       </Box>
     </form>

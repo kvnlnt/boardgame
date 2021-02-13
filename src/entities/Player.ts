@@ -1,6 +1,6 @@
 export interface PlayerProps {
   name: string;
-  active?: boolean;
+  active: boolean;
   position: number;
   piece: string;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { UseHookSendType, UseHookStateType } from '../AppMachine';
+import { UseHookSendType, UseHookStateType, Transition } from '../AppMachine';
 import { Menu } from './Menu';
 import { Logo } from '../common/Logo';
 import { PlayerForm } from './PlayerForm';
@@ -14,13 +14,16 @@ interface GameSetupOptions {
 }
 
 export const GameSetup = ({ state, send }: GameSetupOptions) => {
-  const onReady = () => send('GAME_START');
+  const onReady = () => send(Transition.GAME_START);
   const style = useStyles();
-  const handlePlayerFormSubmit = (player: Player) => {
-    send('ADD_PLAYER', player);
-  };
-  const handlePlayerRemoval = (player: Player) => {
-    send('REMOVE_PLAYER', player);
+  const handlePlayerFormSubmit = (player: Player) =>
+    send(Transition.ADD_PLAYER, player);
+  const handlePlayerRemoval = (player: Player) =>
+    send(Transition.REMOVE_PLAYER, player);
+  const handleSetPlayerActive = (player: Player) =>
+    send(Transition.SET_ACTIVE_PLAYER, { player });
+  const handleMove = (dir: 'up' | 'down', player: Player) => {
+    send(Transition.CHANGE_PLAYER_ORDER, { player, dir });
   };
   return (
     <div style={style.screen}>
@@ -40,11 +43,18 @@ export const GameSetup = ({ state, send }: GameSetupOptions) => {
           <div style={{ marginBottom: 20 }}>
             <Typography text="players" size="big" />
           </div>
-          {state.context.gamePlayers.map((player: Player) => (
+          {state.context.gamePlayers.map((player: Player, idx: number) => (
             <PlayerCard
               onRemove={handlePlayerRemoval}
+              onClick={() => handleSetPlayerActive(player)}
               player={player}
               key={player.name}
+              moveUp={idx === 0 ? null : () => handleMove('up', player)}
+              moveDown={
+                idx === state.context.gamePlayers.length - 1
+                  ? null
+                  : () => handleMove('down', player)
+              }
             />
           ))}
         </div>
@@ -56,11 +66,11 @@ export const GameSetup = ({ state, send }: GameSetupOptions) => {
 const useStyles = (): { [key: string]: React.CSSProperties } => ({
   screen: {
     display: 'grid',
-    gridTemplateColumns: 'auto auto',
+    gridTemplateColumns: '1fr 1fr',
     gridTemplateRows: 'min-content auto',
     gridTemplateAreas: `'header header' 'form players'`,
     width: '100vw',
-    height: '100vh',
+    minHeight: '100vh',
     backgroundColor: theme.black_90,
     gridGap: theme.space,
   },

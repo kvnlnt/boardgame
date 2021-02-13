@@ -45,7 +45,7 @@ const useStyles = (): { [key: string]: React.CSSProperties } => ({
     gridTemplateRows: 'auto 100px',
     gridTemplateAreas: "'board players' 'metrics menu'",
     width: '100vw',
-    height: '100vh',
+    minHeight: '100vh',
     backgroundColor: theme.black_90,
   },
 

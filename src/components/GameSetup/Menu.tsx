@@ -11,7 +11,11 @@ export const Menu = ({ onReady }: SetupMenuProps) => {
   const style = useStyles();
   return (
     <div style={style.menu}>
-      <button data-testid={TestIds.button_ready} onClick={onReady}>
+      <button
+        style={style.playButton}
+        data-testid={TestIds.button_ready}
+        onClick={onReady}
+      >
         {Text('play')}
       </button>
     </div>
@@ -24,5 +28,10 @@ const useStyles = (): { [key: string]: React.CSSProperties } => ({
     justifyContent: 'center',
     alignItems: 'center',
     color: theme.white,
+  },
+  playButton: {
+    backgroundColor: 'transparent',
+    fontSize: 24,
+    color: theme.white_30,
   },
 });
