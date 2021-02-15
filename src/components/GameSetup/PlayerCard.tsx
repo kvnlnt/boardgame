@@ -48,7 +48,7 @@ export const PlayerCard = ({
       onMouseOver={() => setHover(true)}
       onMouseOut={() => setHover(false)}
     >
-      <Button>test</Button>
+      <Button disabled={true}>test</Button>
       <div style={style.piece}>{player.piece}</div>
       <div style={style.title}>{player.name}</div>
       <ButtonList buttons={buttons} />

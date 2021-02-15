@@ -4,9 +4,14 @@ import { styles } from '../../../theme';
 export interface ButtonProps {
   onClick?: () => any;
   children: React.ReactNode;
+  disabled?: boolean;
 }
 
-export const Button = ({ onClick, children }: ButtonProps) => {
+export const Button = ({
+  onClick,
+  children,
+  disabled = false,
+}: ButtonProps) => {
   const [hover, setHover] = useState<boolean>(false);
   const handleClick = (e) => {
     e.stopPropagation();
@@ -18,12 +23,21 @@ export const Button = ({ onClick, children }: ButtonProps) => {
       onMouseOver={() => setHover(true)}
       onMouseOut={() => setHover(false)}
       style={styles([
-        ['fs_m'],
-        ['cursor_pointer'],
-        ['bg_color_black_80'],
-        ['border_none'],
+        ['bg_color_trans'],
+        ['bg_color_white_05', hover],
+        ['border_color_white_20'],
+        ['border_style_solid'],
+        ['border_width_1'],
         ['color_white_50'],
-        ['color_white_05', hover],
+        ['color_white', hover],
+        ['cursor_pointer'],
+        ['fs_m'],
+        ['padding_x_20'],
+        ['padding_y_5'],
+        ['color_white_20', disabled],
+        ['cursor_default', disabled],
+        ['pointer_events_none', disabled],
+        ['border_color_white_10', disabled],
       ])}
       onClick={handleClick}
     >
@@ -31,31 +45,3 @@ export const Button = ({ onClick, children }: ButtonProps) => {
     </button>
   );
 };
-
-// const styles = makeStyles({
-//   normal: {
-//     width: 'max-content',
-//     color: theme.white_50,
-//     padding: '5px 20px',
-//     backgroundColor: 'transparent',
-//     border: `1px solid ${theme.white_20}`,
-//     fontSize: 12,
-//     cursor: 'pointer',
-//   },
-//   normal_on_hover: {
-//     color: theme.white,
-//     backgroundColor: theme.white_05,
-//     transition: 'all 0.5s',
-//     border: `1px solid ${theme.white}`,
-//     cursor: 'pointer',
-//   },
-//   disabled: {
-//     width: 'max-content',
-//     color: theme.white_20,
-//     padding: '5px 20px',
-//     backgroundColor: 'transparent',
-//     border: `1px solid ${theme.white_10}`,
-//     fontSize: 12,
-//     cursor: 'pointer',
-//   },
-// });
