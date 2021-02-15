@@ -1,6 +1,7 @@
 import l10n from '../../lib/l10n';
 import React from 'react';
 import theme from '~/theme';
+import { makeStyles } from '~/lib/makeStyles';
 
 type SizeTypes = 'normal' | 'small' | 'big' | 'huge';
 type Moods = 'normal' | 'info' | 'warning' | 'error' | 'success';
@@ -9,50 +10,64 @@ interface TypographyProps {
   text: keyof typeof l10n;
   size?: SizeTypes;
   mood?: Moods;
+  uppercase?: boolean;
 }
 
 export const Typography = ({
   text,
   size = 'normal',
   mood = 'normal',
+  uppercase = false,
 }: TypographyProps) => {
-  const moodType = useStyleType()[mood];
-  const sizeType = useSizeType()[size];
-
-  return <div style={{ ...moodType, ...sizeType }}>{l10n[text]}</div>;
+  return (
+    <div
+      style={styles([
+        ['sizeNormal', size === 'normal'],
+        ['sizeSmall', size === 'small'],
+        ['sizeBig', size === 'big'],
+        ['sizeHuge', size === 'huge'],
+        ['colorNormal', mood === 'normal'],
+        ['colorInfo', mood === 'info'],
+        ['colorWarning', mood === 'warning'],
+        ['colorError', mood === 'error'],
+        ['colorSuccess', mood === 'success'],
+        ['uppercase', uppercase],
+      ])}
+    >
+      {l10n[text]}
+    </div>
+  );
 };
 
-const useSizeType = (): {
-  [key in SizeTypes]: React.CSSProperties;
-} => ({
-  normal: {
+const styles = makeStyles({
+  sizeNormal: {
     fontSize: 16,
   },
-  small: {
+  sizeSmall: {
     fontSize: 14,
   },
-  big: {
+  sizeBig: {
     fontSize: 24,
   },
-  huge: {
+  sizeHuge: {
     fontSize: 32,
   },
-});
-
-const useStyleType = (): { [key in Moods]: React.CSSProperties } => ({
-  normal: {
+  colorNormal: {
     color: theme.white,
   },
-  info: {
+  colorInfo: {
     color: theme.black_80,
   },
-  warning: {
+  colorWarning: {
     color: theme.black_80,
   },
-  error: {
+  colorError: {
     color: theme.red,
   },
-  success: {
+  colorSuccess: {
     color: theme.green,
+  },
+  uppercase: {
+    textTransform: 'uppercase',
   },
 });

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Player } from '~/entities/Player';
 import theme from '~/theme';
-import { Button, ButtonProps } from '../common/Button';
+import { ButtonProps } from '../common/Button';
 import { ButtonList } from '../common/ButtonList';
+import { Button } from '../common/Buttons/Button';
 
 interface PlayerCardOpts {
   player: Player;
@@ -22,11 +23,18 @@ export const PlayerCard = ({
   const [hover, setHover] = useState<boolean>(false);
   const style = useStyles({ hover, active: player.active });
   const buttons: ButtonProps[] = [];
-  if (moveUp) buttons.push({ onClick: () => moveUp(player), children: '↑' });
-  if (moveDown)
-    buttons.push({ onClick: () => moveDown(player), children: '↓' });
   buttons.push({
-    mood: player.active ? 'disabled' : 'normal',
+    disabled: moveUp === null,
+    onClick: () => moveUp(player),
+    children: '↑',
+  });
+  buttons.push({
+    disabled: moveDown === null,
+    onClick: () => moveDown(player),
+    children: '↓',
+  });
+  buttons.push({
+    disabled: player.active,
     onClick: () => onRemove(player),
     children: 'X',
   });
@@ -40,6 +48,7 @@ export const PlayerCard = ({
       onMouseOver={() => setHover(true)}
       onMouseOut={() => setHover(false)}
     >
+      <Button>test</Button>
       <div style={style.piece}>{player.piece}</div>
       <div style={style.title}>{player.name}</div>
       <ButtonList buttons={buttons} />
@@ -53,7 +62,7 @@ const useStyles = ({
 }): { [key: string]: React.CSSProperties } => ({
   card: {
     color: active ? theme.white : theme.white_40,
-    borderBottom: `1px dashed ${theme.white_50}`,
+    border: `1px solid ${theme.white_20}`,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',

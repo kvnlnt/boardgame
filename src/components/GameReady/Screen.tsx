@@ -1,5 +1,9 @@
 import React from 'react';
-import { UseHookSendType, UseHookStateType, Transition } from '../AppMachine';
+import {
+  UseHookSendType,
+  UseHookStateType,
+  Transition,
+} from '../../machines/AppMachine';
 import { Logo } from '../common/Logo';
 import theme from '../../theme';
 import { Typography } from '../common/Typography';

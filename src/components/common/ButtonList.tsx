@@ -6,20 +6,13 @@ interface ButtonListProps {
 }
 
 export const ButtonList = ({ buttons }: ButtonListProps) => {
-  const style = useStyles();
   return (
     <>
-      {buttons.map((props) => (
-        <div style={style.wrapper}>
+      {buttons.map((props, idx) => (
+        <div key={idx} style={{ margin: 5 }}>
           <Button {...props} />
         </div>
       ))}
     </>
   );
 };
-
-const useStyles = (): { [key: string]: React.CSSProperties } => ({
-  wrapper: {
-    margin: 5,
-  },
-});

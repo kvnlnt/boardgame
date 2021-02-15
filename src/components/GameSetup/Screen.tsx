@@ -1,5 +1,9 @@
 import React from 'react';
-import { UseHookSendType, UseHookStateType, Transition } from '../AppMachine';
+import {
+  UseHookSendType,
+  UseHookStateType,
+  Transition,
+} from '../../machines/AppMachine';
 import { Menu } from './Menu';
 import { Logo } from '../common/Logo';
 import { PlayerForm } from './PlayerForm';
@@ -33,6 +37,7 @@ export const GameSetup = ({ state, send }: GameSetupOptions) => {
     <div style={style.screen}>
       <div style={style.header}>
         <Logo />
+        <Typography text="setup" size="normal" uppercase={true} />
         {availablePieces.length === 0 && (
           <div style={style.message}>
             <Typography text="youAreReady" mood="success" />
@@ -51,9 +56,6 @@ export const GameSetup = ({ state, send }: GameSetupOptions) => {
       )}
       {state.context.gamePlayers && (
         <div style={style.players}>
-          <div style={{ marginBottom: 20 }}>
-            <Typography text="players" size="big" />
-          </div>
           {state.context.gamePlayers.map((player: Player, idx: number) => (
             <PlayerCard
               onRemove={handlePlayerRemoval}
@@ -102,7 +104,11 @@ const useStyles = (): { [key: string]: React.CSSProperties } => ({
     margin: 20,
   },
   players: {
+    display: 'grid',
     gridArea: 'players',
     margin: 20,
+    gridGap: 10,
+    gridAutoRows: 'auto',
+    gridAutoColumns: 'auto',
   },
 });

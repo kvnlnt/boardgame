@@ -1,9 +1,10 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { useMachine } from '@xstate/react';
-import { AppMachine } from './AppMachine';
-import { GamePlay } from './GamePlay/Screen';
-import { GameSetup } from './GameSetup/Screen';
-import { GameReady } from './GameReady/Screen';
+import { AppMachine } from './machines/AppMachine';
+import { GamePlay } from './components/GamePlay/Screen';
+import { GameSetup } from './components/GameSetup/Screen';
+import { GameReady } from './components/GameReady/Screen';
 
 export const App = () => {
   const [state, send] = useMachine(AppMachine);
@@ -24,3 +25,5 @@ export const App = () => {
   }
   return <div>{screen}</div>;
 };
+
+ReactDOM.render(<App />, document.getElementById('root'));

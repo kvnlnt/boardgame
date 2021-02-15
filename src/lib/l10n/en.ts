@@ -8,6 +8,7 @@ export default {
   name: 'Name',
   nameIsRequired: 'Name is required',
   nameIsTaken: 'Player name is already taken',
+  setup: 'Setup',
   startGame: 'Start Game',
   youAreReady: "You're Ready!!!",
 };

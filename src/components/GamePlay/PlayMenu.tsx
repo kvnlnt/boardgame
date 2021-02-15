@@ -1,6 +1,7 @@
 import React from 'react';
 import TestIds from '../../lib/TestIds';
 import theme from '~/theme';
+import { Button } from '../common/Button';
 
 interface PlayMenuProps {
   onSettingsClick: () => void;
@@ -10,13 +11,7 @@ export const PlayMenu = ({ onSettingsClick }: PlayMenuProps) => {
   const style = useStyles();
   return (
     <div>
-      <button
-        style={style.button}
-        data-testid={TestIds.button_settings}
-        onClick={onSettingsClick}
-      >
-        ⚙
-      </button>
+      <Button onClick={onSettingsClick}>⚙</Button>
     </div>
   );
 };

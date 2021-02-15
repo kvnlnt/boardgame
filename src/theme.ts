@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default {
   black: 'rgba(0, 0, 0, 1)',
   black_80: 'rgba(0, 0, 0, 0.8)',
@@ -18,4 +20,81 @@ export default {
   space: 10,
   red: 'rgba(255, 0, 0, 1)',
   green: 'rgba(0, 125, 0, 1)',
+};
+
+const theme = {
+  black: 'rgba(0, 0, 0, 1)',
+  black_80: 'rgba(0, 0, 0, 0.8)',
+  black_90: 'rgba(0, 0, 0, 0.9)',
+  white: 'rgba(255, 255, 255, 1)',
+  white_01: 'rgba(255, 255, 255, 0.01)',
+  white_02: 'rgba(255, 255, 255, 0.02)',
+  white_03: 'rgba(255, 255, 255, 0.03)',
+  white_04: 'rgba(255, 255, 255, 0.04)',
+  white_05: 'rgba(255, 255, 255, 0.05)',
+  white_10: 'rgba(255, 255, 255, 0.1)',
+  white_20: 'rgba(255, 255, 255, 0.2)',
+  white_30: 'rgba(255, 255, 255, 0.3)',
+  white_40: 'rgba(255, 255, 255, 0.4)',
+  white_50: 'rgba(255, 255, 255, 0.5)',
+  white_60: 'rgba(255, 255, 255, 0.6)',
+  white_70: 'rgba(255, 255, 255, 0.7)',
+  space: 10,
+  red: 'rgba(255, 0, 0, 1)',
+  green: 'rgba(0, 125, 0, 1)',
+};
+
+const atoms = {
+  bg_color_black: { backgroundColor: theme.black },
+  bg_color_black_80: { backgroundColor: theme.black_80 },
+  bg_color_black_90: { backgroundColor: theme.black_90 },
+  bg_color_white: { backgroundColor: theme.white },
+  bg_color_white_01: { backgroundColor: theme.white_01 },
+  bg_color_white_02: { backgroundColor: theme.white_02 },
+  bg_color_white_03: { backgroundColor: theme.white_03 },
+  bg_color_white_04: { backgroundColor: theme.white_04 },
+  bg_color_white_05: { backgroundColor: theme.white_05 },
+  bg_color_white_10: { backgroundColor: theme.white_10 },
+  bg_color_white_20: { backgroundColor: theme.white_20 },
+  bg_color_white_30: { backgroundColor: theme.white_30 },
+  bg_color_white_40: { backgroundColor: theme.white_40 },
+  bg_color_white_50: { backgroundColor: theme.white_50 },
+  bg_color_white_60: { backgroundColor: theme.white_60 },
+  bg_color_white_70: { backgroundColor: theme.white_70 },
+  bg_color_red: { backgroundColor: theme.red },
+  bg_color_green: { backgroundColor: theme.green },
+  border_none: { border: 0 },
+  color_black: { color: theme.black },
+  color_black_80: { color: theme.black_80 },
+  color_black_90: { color: theme.black_90 },
+  color_white: { color: theme.white },
+  color_white_01: { color: theme.white_01 },
+  color_white_02: { color: theme.white_02 },
+  color_white_03: { color: theme.white_03 },
+  color_white_04: { color: theme.white_04 },
+  color_white_05: { color: theme.white_05 },
+  color_white_10: { color: theme.white_10 },
+  color_white_20: { color: theme.white_20 },
+  color_white_30: { color: theme.white_30 },
+  color_white_40: { color: theme.white_40 },
+  color_white_50: { color: theme.white_50 },
+  color_white_60: { color: theme.white_60 },
+  color_white_70: { color: theme.white_70 },
+  color_red: { color: theme.red },
+  color_green: { color: theme.green },
+  cursor_pointer: { cursor: 'pointer' },
+  fs_xs: { fontSize: 12 },
+  fs_m: { fontSize: 14 },
+  fs_l: { fontSize: 24 },
+  fs_xl: { fontSize: 32 },
+  tt_up: { textTransform: 'uppercase' },
+} as const;
+
+type AtomTypes = keyof typeof atoms;
+
+export const styles = (rules: [AtomTypes, ...boolean[]][]) => {
+  return rules.reduce((acc, [k, ...cond]) => {
+    if (cond.every((c) => c)) acc = { ...acc, ...atoms[k] };
+    return acc;
+  }, {});
 };

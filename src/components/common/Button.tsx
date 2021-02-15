@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import theme from '~/theme';
+import { makeStyles } from '../../lib/makeStyles';
 
-type ButtonMode = 'normal' | 'normal_on_hover' | 'disabled';
+type ButtonMode = 'normal' | 'normal_on_hover';
 
 export interface ButtonProps {
   mood?: ButtonMode;
   onClick?: () => any;
   children: React.ReactNode;
   type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
 }
 
 export const Button = ({
@@ -15,12 +17,11 @@ export const Button = ({
   onClick,
   children,
   type = 'button',
+  disabled = false,
 }: ButtonProps) => {
   const [hover, setHover] = useState<boolean>(false);
-  const style = useStyles();
   const handleClick = (e) => {
     e.stopPropagation();
-    if (mood === 'disabled') return null;
     if (onClick) onClick();
   };
   return (
@@ -28,15 +29,20 @@ export const Button = ({
       type={type}
       onMouseOver={() => setHover(true)}
       onMouseOut={() => setHover(false)}
-      style={{ ...style[mood], ...(hover ? style[mood + '_on_hover'] : {}) }}
+      style={styles([
+        ['normal', mood === 'normal'],
+        ['normal_on_hover', hover, mood === 'normal'],
+        ['disabled', disabled],
+      ])}
       onClick={handleClick}
+      disabled={disabled ? true : false}
     >
       {children}
     </button>
   );
 };
 
-const useStyles = (): { [key in ButtonMode]: React.CSSProperties } => ({
+const styles = makeStyles({
   normal: {
     width: 'max-content',
     color: theme.white_50,
@@ -44,12 +50,14 @@ const useStyles = (): { [key in ButtonMode]: React.CSSProperties } => ({
     backgroundColor: 'transparent',
     border: `1px solid ${theme.white_20}`,
     fontSize: 12,
+    cursor: 'pointer',
   },
   normal_on_hover: {
     color: theme.white,
     backgroundColor: theme.white_05,
     transition: 'all 0.5s',
     border: `1px solid ${theme.white}`,
+    cursor: 'pointer',
   },
   disabled: {
     width: 'max-content',
@@ -58,5 +66,6 @@ const useStyles = (): { [key in ButtonMode]: React.CSSProperties } => ({
     backgroundColor: 'transparent',
     border: `1px solid ${theme.white_10}`,
     fontSize: 12,
+    cursor: 'pointer',
   },
 });

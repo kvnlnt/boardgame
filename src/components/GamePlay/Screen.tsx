@@ -2,7 +2,11 @@ import React from 'react';
 import { Board } from './Board';
 import { Metrics } from './Metrics';
 import { Players } from './Players';
-import { Transition, UseHookSendType, UseHookStateType } from '../AppMachine';
+import {
+  Transition,
+  UseHookSendType,
+  UseHookStateType,
+} from '../../machines/AppMachine';
 import { PlayMenu } from './PlayMenu';
 import theme from '~/theme';
 
