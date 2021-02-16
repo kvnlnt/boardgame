@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default {
   black: 'rgba(0, 0, 0, 1)',
   black_80: 'rgba(0, 0, 0, 0.8)',
@@ -107,53 +105,48 @@ const atoms = {
   cursor_pointer: { cursor: 'pointer' },
   cursor_default: { cursor: 'default' },
   pointer_events_none: { pointerEvents: 'none' },
-  fs_l: { fontSize: 24 },
-  fs_m: { fontSize: 14 },
-  fs_xl: { fontSize: 32 },
-  fs_xs: { fontSize: 12 },
-  padding_x_20: { paddingLeft: 20, paddingRight: 20 },
-  padding_y_5: { paddingTop: 5, paddingBottom: 5 },
+  fs_l: { fontSize: '24px' },
+  fs_m: { fontSize: '14px' },
+  fs_xl: { fontSize: '32px' },
+  fs_xs: { fontSize: '12px' },
+  padding_x_20: { paddingLeft: '20px', paddingRight: '20px' },
+  padding_y_5: { paddingTop: '5px', paddingBottom: '5px' },
   tt_up: { textTransform: 'uppercase' },
 } as const;
-
-export const styles = (rules: [keyof typeof atoms, ...boolean[]][]) => {
-  return rules.reduce((acc, [k, ...cond]) => {
-    if (cond.every((c) => c)) acc = { ...acc, ...atoms[k] };
-    return acc;
-  }, {});
-};
 
 interface GenerateCssProps {
   suffix?: string;
   psuedoSelector?: string;
-  breakpoint?: [number, number];
 }
-export const GenerateCss = ({ suffix, psuedoSelector }: GenerateCssProps) =>
+export const GenerateCss = ({
+  suffix = '',
+  psuedoSelector = '',
+}: GenerateCssProps) =>
   Object.entries(atoms)
     .map(([atom, declarations]) => {
-      return `.${atom}${suffix ? '_' + suffix : ''}${
-        psuedoSelector ? ':' + psuedoSelector : ''
-      } { ${Object.entries(declarations).map(
-        ([prop, val]) =>
-          `${prop.replace(/([A-Z])/g, '-$1').toLowerCase()}: '${val}'; }`
-      )}`;
+      return `.${atom}${suffix}${psuedoSelector} { ${Object.entries(
+        declarations
+      )
+        .map(
+          ([prop, val]) =>
+            `${prop.replace(/([A-Z])/g, '-$1').toLowerCase()}: ${val}; `
+        )
+        .join('')}}`;
     })
     .join('\n');
 
 export const Css = `
-${GenerateCss({})}
-${GenerateCss({ suffix: 'on_hover', psuedoSelector: 'hover' })}
 @media (min-width: ${tokens.mobile}){
   ${GenerateCss({})}
-  ${GenerateCss({ suffix: 'on_hover_on_mobile', psuedoSelector: 'hover' })}
+  ${GenerateCss({ suffix: '_on_hover', psuedoSelector: ':hover' })}
 }
 @media (min-width: ${tokens.tablet}){
   ${GenerateCss({})}
-  ${GenerateCss({ suffix: 'on_hover_on_tablet', psuedoSelector: 'hover' })}
+  ${GenerateCss({ suffix: '_on_hover_on_tablet', psuedoSelector: ':hover' })}
 }
 @media (min-width: ${tokens.desktop}){
   ${GenerateCss({})}
-  ${GenerateCss({ suffix: 'on_hover_on_desktop', psuedoSelector: 'hover' })}
+  ${GenerateCss({ suffix: '_on_hover_on_desktop', psuedoSelector: ':hover' })}
 }
 `;
 
@@ -163,9 +156,17 @@ export const CreateStyleSheet = (css: string): void => {
   document.getElementsByTagName('head')[0].appendChild(style);
 };
 
-type classType = keyof typeof atoms;
-export const clx = (atoms: classType[]) => {
-  return atoms.join(' ');
+type classnames = keyof typeof atoms;
+type classnames_on_hover = `${classnames}_on_hover`;
+type classnames_on_hover_tablet = `${classnames}_on_hover_on_tablet`;
+type classnames_on_hover_desktop = `${classnames}_on_hover_on_desktop`;
+export const clx = (
+  list: (
+    | classnames
+    | classnames_on_hover
+    | classnames_on_hover_tablet
+    | classnames_on_hover_desktop
+  )[]
+) => {
+  return list.join(' ');
 };
-
-console.log(clx(['bg_color_black_80', 'color_green']));

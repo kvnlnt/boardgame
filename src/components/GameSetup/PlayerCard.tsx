@@ -3,7 +3,6 @@ import { Player } from '~/entities/Player';
 import theme from '~/theme';
 import { ButtonProps } from '../common/Button';
 import { ButtonList } from '../common/ButtonList';
-import { Button } from '../common/Buttons/Button';
 
 interface PlayerCardOpts {
   player: Player;
@@ -48,7 +47,6 @@ export const PlayerCard = ({
       onMouseOver={() => setHover(true)}
       onMouseOut={() => setHover(false)}
     >
-      <Button disabled={true}>test</Button>
       <div style={style.piece}>{player.piece}</div>
       <div style={style.title}>{player.name}</div>
       <ButtonList buttons={buttons} />
