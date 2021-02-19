@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ButtonProps } from '../common/Buttons/Button';
+import { Button, ButtonProps } from './Button';
 
 interface ButtonListProps {
   buttons: ButtonProps[];

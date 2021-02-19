@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text } from '../common/Text';
-import theme from '~/theme';
-import { Button } from '../common/Button';
+import { localize } from '../../lib/l10n/localize';
+import theme from '~/design/theme';
+import { Button } from '../../design/Buttons/Button';
 
 interface SetupMenuProps {
   onStart: () => void;
@@ -11,7 +11,7 @@ export const Menu = ({ onStart }: SetupMenuProps) => {
   const style = useStyles();
   return (
     <div style={style.menu}>
-      <Button onClick={onStart}>{Text('startGame')}</Button>
+      <Button onClick={onStart}>{localize('startGame')}</Button>
     </div>
   );
 };

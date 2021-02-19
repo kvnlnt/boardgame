@@ -1,6 +1,6 @@
 import React from 'react';
 import { Player } from '~/entities/Player';
-import theme from '~/theme';
+import theme from '~/design/theme';
 
 export interface PlayersProps {
   players: Player[];

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { clx } from '../../../theme';
+import React from 'react';
+import { atomize } from '../theme';
 
 export interface ButtonProps {
   onClick?: () => any;
@@ -19,7 +19,7 @@ export const Button = ({
   return (
     <button
       type="button"
-      className={clx([
+      className={atomize(
         'border_style_solid',
         'border_width_1',
         'fs_m',
@@ -30,8 +30,8 @@ export const Button = ({
         disabled ? 'border_color_white_10' : 'border_color_white_20',
         disabled ? 'color_white_10' : 'color_white_50',
         disabled ? 'cursor_default' : 'cursor_pointer',
-        disabled ? 'pointer_events_none' : null,
-      ])}
+        disabled ? 'pointer_events_none' : null
+      )}
       onClick={handleClick}
     >
       {children}

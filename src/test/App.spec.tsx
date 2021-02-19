@@ -2,28 +2,28 @@ import React from 'react';
 import { createModel } from '@xstate/test';
 import { render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { App } from './App';
-import { AppMachineConfig } from './machines/AppMachine';
+import { App } from '../App';
+import { AppMachineConfig } from '../machines/AppMachine';
 import { Machine } from 'xstate';
 
 const machine = Machine(AppMachineConfig);
 const model = createModel(machine).withEvents({
-  GAME_SETUP: {
+  SETUP_GAME: {
     exec: () => {
       expect(1).toBe(1);
     },
   },
-  GAME_START: {
+  START_GAME: {
     exec: () => {
       expect(1).toBe(1);
     },
   },
-  GAME_END: {
+  END_GAME: {
     exec: () => {
       expect(1).toBe(1);
     },
   },
-  DICE_ROLL: {
+  ROLL_DICE: {
     exec: () => {
       expect(1).toBe(1);
     },

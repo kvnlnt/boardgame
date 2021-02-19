@@ -4,18 +4,18 @@ import {
   UseHookStateType,
   Transition,
 } from '../../machines/AppMachine';
-import { Logo } from '../common/Logo';
-import theme from '../../theme';
-import { Typography } from '../common/Typography';
+import { Logo } from '../../design/Logo';
+import theme from '../../design/theme';
+import { Typography } from '../../design/Typography';
 
-interface GameReadyOptions {
+interface ReadyOptions {
   state: UseHookStateType;
   send: UseHookSendType;
 }
 
-export const GameReady = ({ state, send }: GameReadyOptions) => {
-  const onStart = () => send(Transition.GAME_START);
-  const onSetup = () => send(Transition.GAME_SETUP);
+export const StartTheGameAlready = ({ state, send }: ReadyOptions) => {
+  const onStart = () => send(Transition.START_GAME);
+  const onSetup = () => send(Transition.SETUP_GAME);
   const style = useStyles();
   return (
     <div style={style.screen}>

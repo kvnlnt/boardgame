@@ -5,20 +5,20 @@ import {
   Transition,
 } from '../../machines/AppMachine';
 import { Menu } from './Menu';
-import { Logo } from '../common/Logo';
+import { Logo } from '../../design/Logo';
 import { PlayerForm } from './PlayerForm';
 import { PlayerCard } from './PlayerCard';
-import { Player, PlayerPieces } from '~/entities/Player';
-import theme from '../../theme';
-import { Typography } from '../common/Typography';
+import { Player, PlayerPieces } from '../../entities/Player';
+import theme from '../../design/theme';
+import { Typography } from '../../design/Typography';
 
-interface GameSetupOptions {
+interface SetupOptions {
   state: UseHookStateType;
   send: UseHookSendType;
 }
 
-export const GameSetup = ({ state, send }: GameSetupOptions) => {
-  const onStart = () => send(Transition.GAME_START);
+export const StartingNewGame = ({ state, send }: SetupOptions) => {
+  const onStart = () => send(Transition.START_GAME);
   const style = useStyles();
   const handlePlayerFormSubmit = (player: Player) =>
     send(Transition.ADD_PLAYER, player);
@@ -28,8 +28,8 @@ export const GameSetup = ({ state, send }: GameSetupOptions) => {
     send(Transition.SET_ACTIVE_PLAYER, { player });
   const handleMove = (dir: 'up' | 'down', player: Player) =>
     send(Transition.CHANGE_PLAYER_ORDER, { player, dir });
-  const handleGameReady = () => send(Transition.GAME_READY);
-  const usedPieces = state.context.gamePlayers.map((player) => player.piece);
+  const handleReady = () => send(Transition.PUSH_TO_START_GAME);
+  const usedPieces = state.context.players.map((player) => player.piece);
   const availablePieces = PlayerPieces.filter(
     (piece) => !usedPieces.includes(piece)
   );
@@ -37,10 +37,10 @@ export const GameSetup = ({ state, send }: GameSetupOptions) => {
     <div style={style.screen}>
       <div style={style.header}>
         <Logo />
-        <Typography text="setup" size="normal" uppercase={true} />
+        <Typography text="setup" fontSize="normal" uppercase={true} />
         {availablePieces.length === 0 && (
           <div style={style.message}>
-            <Typography text="youAreReady" mood="success" />
+            <Typography text="youAreReady" condition="success" />
           </div>
         )}
         <Menu onStart={onStart} />
@@ -49,14 +49,14 @@ export const GameSetup = ({ state, send }: GameSetupOptions) => {
         <div style={style.form}>
           <PlayerForm
             pieces={availablePieces}
-            players={state.context.gamePlayers}
+            players={state.context.players}
             onSubmit={handlePlayerFormSubmit}
           ></PlayerForm>
         </div>
       )}
-      {state.context.gamePlayers && (
+      {state.context.players && (
         <div style={style.players}>
-          {state.context.gamePlayers.map((player: Player, idx: number) => (
+          {state.context.players.map((player: Player, idx: number) => (
             <PlayerCard
               onRemove={handlePlayerRemoval}
               onClick={() => handleSetPlayerActive(player)}
@@ -64,7 +64,7 @@ export const GameSetup = ({ state, send }: GameSetupOptions) => {
               key={player.name}
               moveUp={idx === 0 ? null : () => handleMove('up', player)}
               moveDown={
-                idx === state.context.gamePlayers.length - 1
+                idx === state.context.players.length - 1
                   ? null
                   : () => handleMove('down', player)
               }

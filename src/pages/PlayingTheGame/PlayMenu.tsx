@@ -1,7 +1,7 @@
 import React from 'react';
-import TestIds from '../../lib/TestIds';
-import theme from '~/theme';
-import { Button } from '../common/Button';
+import TestIds from '../../test/testIds';
+import theme from '~/design/theme';
+import { Button } from '../../design/Buttons/Button';
 
 interface PlayMenuProps {
   onSettingsClick: () => void;

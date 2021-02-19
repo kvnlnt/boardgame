@@ -2,27 +2,27 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { useMachine } from '@xstate/react';
 import { AppMachine } from './machines/AppMachine';
-import { GamePlay } from './components/GamePlay/Screen';
-import { GameSetup } from './components/GameSetup/Screen';
-import { GameReady } from './components/GameReady/Screen';
-import { CreateStyleSheet, Css } from './theme';
+import { PlayingTheGame } from './pages/PlayingTheGame';
+import { StartingNewGame } from './pages/StartingNewGame';
+import { StartTheGameAlready } from './pages/StartTheGameAlready';
+import { CreateStyleSheet, Css } from './design/theme';
 
 export const App = () => {
   const [state, send] = useMachine(AppMachine);
   CreateStyleSheet(Css);
   let screen;
   switch (state.value) {
-    case 'gameReady':
-      screen = <GameReady state={state} send={send} />;
+    case 'startTheGameAlready':
+      screen = <StartTheGameAlready state={state} send={send} />;
       break;
-    case 'gameSetup':
-      screen = <GameSetup state={state} send={send} />;
+    case 'startingNewGame':
+      screen = <StartingNewGame state={state} send={send} />;
       break;
-    case 'gamePlay':
-      screen = <GamePlay state={state} send={send} />;
+    case 'playingTheGame':
+      screen = <PlayingTheGame state={state} send={send} />;
       break;
-    case 'gameEnd':
-      screen = 'gameEnd';
+    case 'gameOver':
+      screen = 'end';
       break;
   }
   return <div>{screen}</div>;

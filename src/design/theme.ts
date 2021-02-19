@@ -18,6 +18,7 @@ export default {
   space: 10,
   red: 'rgba(255, 0, 0, 1)',
   green: 'rgba(0, 125, 0, 1)',
+  yellow: 'rgba(255,255,0,1)',
 };
 
 const tokens = {
@@ -40,18 +41,22 @@ const tokens = {
   space: 10,
   red: 'rgba(255, 0, 0, 1)',
   green: 'rgba(0, 125, 0, 1)',
+  yellow: 'rgba(255,255,0,1)',
+  blue: 'rgba(0,0,255,1)',
   mobile: '0px',
   tablet: '640px',
   desktop: '1200px',
 };
 
-const atoms = {
+const css = {
   bg_color_black_80: { backgroundColor: tokens.black_80 },
   bg_color_black_90: { backgroundColor: tokens.black_90 },
   bg_color_black: { backgroundColor: tokens.black },
-  bg_color_green: { backgroundColor: tokens.green },
-  bg_color_red: { backgroundColor: tokens.red },
+  bg_color_error: { backgroundColor: tokens.red },
+  bg_color_info: { backgroundColor: tokens.blue },
+  bg_color_success: { backgroundColor: tokens.green },
   bg_color_trans: { backgroundColor: 'transparent' },
+  bg_color_warning: { backgroundColor: tokens.yellow },
   bg_color_white_01: { backgroundColor: tokens.white_01 },
   bg_color_white_02: { backgroundColor: tokens.white_02 },
   bg_color_white_03: { backgroundColor: tokens.white_03 },
@@ -87,8 +92,10 @@ const atoms = {
   color_black_80: { color: tokens.black_80 },
   color_black_90: { color: tokens.black_90 },
   color_black: { color: tokens.black },
-  color_green: { color: tokens.green },
-  color_red: { color: tokens.red },
+  color_error: { color: tokens.red },
+  color_info: { color: tokens.blue },
+  color_success: { color: tokens.green },
+  color_warning: { color: tokens.yellow },
   color_white_01: { color: tokens.white_01 },
   color_white_02: { color: tokens.white_02 },
   color_white_03: { color: tokens.white_03 },
@@ -102,16 +109,16 @@ const atoms = {
   color_white_60: { color: tokens.white_60 },
   color_white_70: { color: tokens.white_70 },
   color_white: { color: tokens.white },
-  cursor_pointer: { cursor: 'pointer' },
   cursor_default: { cursor: 'default' },
-  pointer_events_none: { pointerEvents: 'none' },
+  cursor_pointer: { cursor: 'pointer' },
   fs_l: { fontSize: '24px' },
   fs_m: { fontSize: '14px' },
+  fs_s: { fontSize: '12px' },
   fs_xl: { fontSize: '32px' },
-  fs_xs: { fontSize: '12px' },
   padding_x_20: { paddingLeft: '20px', paddingRight: '20px' },
   padding_y_5: { paddingTop: '5px', paddingBottom: '5px' },
-  tt_up: { textTransform: 'uppercase' },
+  pointer_events_none: { pointerEvents: 'none' },
+  textUppercase: { textTransform: 'uppercase' },
 } as const;
 
 interface GenerateCssProps {
@@ -122,7 +129,7 @@ export const GenerateCss = ({
   suffix = '',
   psuedoSelector = '',
 }: GenerateCssProps) =>
-  Object.entries(atoms)
+  Object.entries(css)
     .map(([atom, declarations]) => {
       return `.${atom}${suffix}${psuedoSelector} { ${Object.entries(
         declarations
@@ -156,17 +163,16 @@ export const CreateStyleSheet = (css: string): void => {
   document.getElementsByTagName('head')[0].appendChild(style);
 };
 
-type classnames = keyof typeof atoms;
-type classnames_on_hover = `${classnames}_on_hover`;
-type classnames_on_hover_tablet = `${classnames}_on_hover_on_tablet`;
-type classnames_on_hover_desktop = `${classnames}_on_hover_on_desktop`;
-export const clx = (
-  list: (
-    | classnames
-    | classnames_on_hover
-    | classnames_on_hover_tablet
-    | classnames_on_hover_desktop
-  )[]
-) => {
+type selector = keyof typeof css;
+type selector_on_hover = `${selector}_on_hover`;
+type selector_on_hover_tablet = `${selector}_on_hover_on_tablet`;
+type selector_on_hover_desktop = `${selector}_on_hover_on_desktop`;
+export type atoms =
+  | ''
+  | selector
+  | selector_on_hover
+  | selector_on_hover_tablet
+  | selector_on_hover_desktop;
+export const atomize = (...list: atoms[]) => {
   return list.join(' ');
 };

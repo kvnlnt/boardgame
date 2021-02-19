@@ -2,8 +2,8 @@ import React from 'react';
 import { Dice } from './dice';
 import { Card } from './Card';
 import { Player } from '~/entities/Player';
-import { Logo } from '../common/Logo';
-import theme from '~/theme';
+import { Logo } from '../../design/Logo';
+import theme from '~/design/theme';
 
 interface PieceOpts {
   player: Player;

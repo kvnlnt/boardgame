@@ -1,10 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Typography } from '../common/Typography';
-import { Box } from '../common/Box';
-import { Text } from '../common/Text';
-import { Player, PlayerPieces } from '~/entities/Player';
-import { Button } from '../common/Button';
+import { Typography } from '../../design/Typography';
+import { Box } from '../../design/Layout/Box';
+import { localize } from '../../lib/l10n/localize';
+import { Player, PlayerPieces } from '../../entities/Player';
+import { Button } from '../../design/Buttons/Button';
 
 interface PlayerFormOptions {
   players: Player[];
@@ -31,10 +31,10 @@ export const PlayerForm = ({
 
   return (
     <form onSubmit={handleSubmit(onFormSubmission)}>
-      <Typography text="addPlayer" size="big" />
+      <Typography localize="addPlayer" size="big" />
       <Box>
         <fieldset>
-          <label>{Text('name')}</label>
+          <label>{localize('name')}</label>
           <input
             name="name"
             ref={register({
@@ -46,17 +46,17 @@ export const PlayerForm = ({
           />
           {errors.name?.type === 'dupCheck' && (
             <div style={{ padding: 10 }}>
-              <Typography text="nameIsTaken" style="error" />
+              <Typography localize="nameIsTaken" style="error" />
             </div>
           )}
           {errors.name?.type === 'required' && (
             <div style={{ padding: 10 }}>
-              <Typography text="nameIsRequired" style="error" />
+              <Typography localize="nameIsRequired" style="error" />
             </div>
           )}
         </fieldset>
         <fieldset>
-          <label>{Text('piece')}</label>
+          <label>{localize('piece')}</label>
           <select
             name="piece"
             ref={register({
@@ -69,7 +69,7 @@ export const PlayerForm = ({
           </select>
         </fieldset>
         <fieldset style={{ marginTop: 20 }}>
-          <Button type="submit">{Text('add')} </Button>
+          <Button type="submit">{localize('add')} </Button>
         </fieldset>
       </Box>
     </form>

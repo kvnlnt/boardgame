@@ -11,29 +11,21 @@ import {
 } from 'xstate';
 
 interface AppContext {
-  gameDice: number;
-  gamePlayers: Player[];
+  dice: number;
+  players: Player[];
   gameInProgress: boolean;
 }
 
 export enum Transition {
   ADD_PLAYER = 'ADD_PLAYER',
   CHANGE_PLAYER_ORDER = 'CHANGE_PLAYER_ORDER',
-  DICE_ROLL = 'DICE_ROLL',
-  GAME_END = 'GAME_END',
-  GAME_READY = 'GAME_READY',
-  GAME_SETUP = 'GAME_SETUP',
-  GAME_START = 'GAME_START',
+  ROLL_DICE = 'ROLL_DICE',
+  END_GAME = 'END_GAME',
+  PUSH_TO_START_GAME = 'PUSH_TO_START_GAME',
+  SETUP_GAME = 'SETUP_GAME',
+  START_GAME = 'START_GAME',
   REMOVE_PLAYER = 'REMOVE_PLAYER',
   SET_ACTIVE_PLAYER = 'SET_ACTIVE_PLAYER',
-}
-
-enum Action {
-  addPlayer = 'addPlayer',
-  changePlayerOrder = 'changePlayerOrder',
-  removePlayer = 'removePlayer',
-  rollDice = 'rollDice',
-  setActivePlayer = 'setActivePlayer',
 }
 
 type TransitionRemovePlayer = { type: Transition.REMOVE_PLAYER; name: string };
@@ -49,11 +41,11 @@ type TransitionChangePlayer = {
   player: Player;
   dir: 'up' | 'down';
 };
-type TransitionDiceRoll = { type: Transition.DICE_ROLL; number: number };
-type TransitionGameSetup = { type: Transition.GAME_SETUP; screen: string };
-type TransitionGameReady = { type: Transition.GAME_READY; screen: string };
-type TransitionGameStart = { type: Transition.GAME_START; screen: string };
-type TransitionGameEnd = { type: Transition.GAME_END; screen: string };
+type TransitionDiceRoll = { type: Transition.ROLL_DICE; number: number };
+type TransitionSetup = { type: Transition.SETUP_GAME; screen: string };
+type TransitionReady = { type: Transition.PUSH_TO_START_GAME; screen: string };
+type TransitionGameStart = { type: Transition.START_GAME; screen: string };
+type TransitionGameEnd = { type: Transition.END_GAME; screen: string };
 type TransitionSetActivePlayer = {
   type: Transition.SET_ACTIVE_PLAYER;
   player: Player;
@@ -63,8 +55,8 @@ type AppTransitions =
   | TransitionAddPlayer
   | TransitionChangePlayer
   | TransitionDiceRoll
-  | TransitionGameReady
-  | TransitionGameSetup
+  | TransitionReady
+  | TransitionSetup
   | TransitionGameStart
   | TransitionGameEnd
   | TransitionRemovePlayer
@@ -72,21 +64,12 @@ type AppTransitions =
 
 type AppSchema = {
   states: {
-    gameSetup: {};
-    gameReady: {};
-    gamePlay: {};
-    gameEnd: {};
+    startingNewGame: {};
+    startTheGameAlready: {};
+    playingTheGame: {};
+    gameOver: {};
   };
 };
-
-const fakeGame: Player[] = [
-  { name: 'Kevin', position: 1, piece: '♔', active: true },
-  { name: 'Lincoln', position: 1, piece: '♕', active: false },
-  { name: 'Jaymie', position: 1, piece: '♖', active: false },
-  { name: 'Sydnie', position: 1, piece: '♗', active: false },
-  { name: 'Luther', position: 1, piece: '♘', active: false },
-  { name: 'James', position: 1, piece: '♙', active: false },
-];
 
 export const AppMachineConfig: MachineConfig<
   AppContext,
@@ -94,71 +77,73 @@ export const AppMachineConfig: MachineConfig<
   AppTransitions
 > = {
   id: 'machine',
-  initial: 'gameSetup',
+  initial: 'startingNewGame',
   context: {
-    gameDice: 1,
-    gamePlayers: fakeGame,
+    dice: 1,
+    players: [
+      { name: 'Kevin', position: 1, piece: '♔', active: true },
+      { name: 'Lincoln', position: 1, piece: '♕', active: false },
+      { name: 'Jaymie', position: 1, piece: '♖', active: false },
+      { name: 'Sydnie', position: 1, piece: '♗', active: false },
+      { name: 'Luther', position: 1, piece: '♘', active: false },
+      { name: 'James', position: 1, piece: '♙', active: false },
+    ],
     gameInProgress: false,
   },
   states: {
-    gameReady: {
+    startTheGameAlready: {
       on: {
-        GAME_SETUP: {
-          target: 'gameSetup',
+        SETUP_GAME: {
+          target: 'startingNewGame',
         },
-        GAME_START: {
-          target: 'gamePlay',
+        START_GAME: {
+          target: 'playingTheGame',
         },
       },
     },
-    gameSetup: {
+    startingNewGame: {
       on: {
         ADD_PLAYER: {
-          target: 'gameSetup',
-          actions: [Action.addPlayer],
+          actions: 'addPlayer',
         },
         CHANGE_PLAYER_ORDER: {
-          target: 'gameSetup',
-          actions: [Action.changePlayerOrder],
+          actions: 'changePlayerOrder',
         },
-        GAME_READY: {
-          target: 'gameReady',
+        PUSH_TO_START_GAME: {
+          target: 'startTheGameAlready',
         },
-        GAME_START: {
-          target: 'gamePlay',
+        START_GAME: {
+          target: 'playingTheGame',
         },
         REMOVE_PLAYER: {
-          target: 'gameSetup',
-          actions: [Action.removePlayer],
+          actions: 'removePlayer',
         },
         SET_ACTIVE_PLAYER: {
-          target: 'gameSetup',
-          actions: [Action.setActivePlayer],
+          actions: 'setActivePlayer',
         },
       },
     },
-    gamePlay: {
+    playingTheGame: {
       on: {
-        DICE_ROLL: {
-          target: 'gamePlay',
-          actions: [Action.rollDice],
+        ROLL_DICE: {
+          actions: 'rollDice',
         },
-        GAME_SETUP: {
-          target: 'gameSetup',
+        SETUP_GAME: {
+          target: 'startingNewGame',
         },
-        GAME_END: 'gameEnd',
+        END_GAME: 'gameOver',
       },
     },
-    gameEnd: {},
+    gameOver: {},
   },
 };
 
 export const AppMachineOptions: Partial<MachineOptions<AppContext, any>> = {
   services: {},
   actions: {
-    [Action.addPlayer]: assign<AppContext, TransitionAddPlayer>({
-      gamePlayers: (context, event) => [
-        ...context.gamePlayers,
+    addPlayer: assign<AppContext, TransitionAddPlayer>({
+      players: (context, event) => [
+        ...context.players,
         new Player({
           name: event.name,
           position: 1,
@@ -167,10 +152,10 @@ export const AppMachineOptions: Partial<MachineOptions<AppContext, any>> = {
         }),
       ],
     }),
-    [Action.changePlayerOrder]: assign<AppContext, TransitionChangePlayer>({
-      gamePlayers: (context, event) => {
-        const list = [...context.gamePlayers];
-        const idx = context.gamePlayers.findIndex(
+    changePlayerOrder: assign<AppContext, TransitionChangePlayer>({
+      players: (context, event) => {
+        const list = [...context.players];
+        const idx = context.players.findIndex(
           (player) => player.name === event.player.name
         );
         const x = idx;
@@ -181,18 +166,18 @@ export const AppMachineOptions: Partial<MachineOptions<AppContext, any>> = {
         return list;
       },
     }),
-    [Action.removePlayer]: assign<AppContext, TransitionRemovePlayer>({
-      gamePlayers: (context, event) =>
-        context.gamePlayers.filter((player) => {
+    removePlayer: assign<AppContext, TransitionRemovePlayer>({
+      players: (context, event) =>
+        context.players.filter((player) => {
           return player.name !== event.name;
         }),
     }),
-    [Action.rollDice]: assign<AppContext, TransitionDiceRoll>({
-      gameDice: (_, event) => event.number,
+    rollDice: assign<AppContext, TransitionDiceRoll>({
+      dice: (_, event) => event.number,
     }),
-    [Action.setActivePlayer]: assign<AppContext, TransitionSetActivePlayer>({
-      gamePlayers: (context, event) =>
-        context.gamePlayers.map((player) => ({
+    setActivePlayer: assign<AppContext, TransitionSetActivePlayer>({
+      players: (context, event) =>
+        context.players.map((player) => ({
           ...player,
           active: player.name === event.player.name ? true : false,
         })),

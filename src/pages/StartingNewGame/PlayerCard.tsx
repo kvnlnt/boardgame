@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Player } from '~/entities/Player';
-import theme from '~/theme';
-import { ButtonProps } from '../common/Button';
-import { ButtonList } from '../common/ButtonList';
+import theme from '~/design/theme';
+import { ButtonProps } from '../../design/Buttons/Button';
+import { ButtonList } from '../../design/Buttons/List';
 
 interface PlayerCardOpts {
   player: Player;

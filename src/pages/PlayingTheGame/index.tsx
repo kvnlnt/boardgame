@@ -8,37 +8,37 @@ import {
   UseHookStateType,
 } from '../../machines/AppMachine';
 import { PlayMenu } from './PlayMenu';
-import theme from '~/theme';
+import theme from '~/design/theme';
 
-interface GamePlayOptions {
+interface PlayOptions {
   state: UseHookStateType;
   send: UseHookSendType;
 }
 
-export const GamePlay = ({ state, send }: GamePlayOptions) => {
+export const PlayingTheGame = ({ state, send }: PlayOptions) => {
   const style = useStyles();
   return (
     <div style={style.screen}>
       <div style={style.board}>
         <Board
-          dice={state.context.gameDice}
+          dice={state.context.dice}
           onRoll={(number: number) =>
-            send({ type: Transition.DICE_ROLL, number })
+            send({ type: Transition.ROLL_DICE, number })
           }
-          players={state.context.gamePlayers}
+          players={state.context.players}
         />
       </div>
       <div style={style.players}>
-        <Players players={state.context.gamePlayers} />
+        <Players players={state.context.players} />
       </div>
       <div style={style.metrics}>
         <Metrics
-          dice={state.context.gameDice}
-          player={state.context.gamePlayers.find((p) => p.active)}
+          dice={state.context.dice}
+          player={state.context.players.find((p) => p.active)}
         />
       </div>
       <div style={style.menu}>
-        <PlayMenu onSettingsClick={() => send(Transition.GAME_SETUP)} />
+        <PlayMenu onSettingsClick={() => send(Transition.SETUP_GAME)} />
       </div>
     </div>
   );
