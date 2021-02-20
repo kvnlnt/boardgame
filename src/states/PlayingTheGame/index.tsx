@@ -6,7 +6,7 @@ import {
   Transition,
   UseHookSendType,
   UseHookStateType,
-} from '../../machines/AppMachine';
+} from '../../AppMachine';
 import { PlayMenu } from './PlayMenu';
 import theme from '~/design/theme';
 

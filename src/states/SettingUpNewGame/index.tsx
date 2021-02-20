@@ -3,7 +3,7 @@ import {
   UseHookSendType,
   UseHookStateType,
   Transition,
-} from '../../machines/AppMachine';
+} from '../../AppMachine';
 import { Menu } from './Menu';
 import { Logo } from '../../design/Logo';
 import { PlayerForm } from './PlayerForm';
@@ -17,7 +17,7 @@ interface SetupOptions {
   send: UseHookSendType;
 }
 
-export const StartingNewGame = ({ state, send }: SetupOptions) => {
+export const SettingUpNewGame = ({ state, send }: SetupOptions) => {
   const onStart = () => send(Transition.START_GAME);
   const style = useStyles();
   const handlePlayerFormSubmit = (player: Player) =>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Typography } from '../../design/Typography';
+import { Label } from '../../design/Label';
 import { Box } from '../../design/Layout/Box';
 import { localize } from '../../lib/l10n/localize';
 import { Player, PlayerPieces } from '../../entities/Player';
@@ -31,10 +32,10 @@ export const PlayerForm = ({
 
   return (
     <form onSubmit={handleSubmit(onFormSubmission)}>
-      <Typography localize="addPlayer" size="big" />
+      <Typography text="addPlayer" fontSize="large" />
       <Box>
         <fieldset>
-          <label>{localize('name')}</label>
+          <Label text={'name'} />
           <input
             name="name"
             ref={register({
@@ -46,17 +47,18 @@ export const PlayerForm = ({
           />
           {errors.name?.type === 'dupCheck' && (
             <div style={{ padding: 10 }}>
-              <Typography localize="nameIsTaken" style="error" />
+              <Typography text="nameIsTaken" condition="error" />
             </div>
           )}
           {errors.name?.type === 'required' && (
             <div style={{ padding: 10 }}>
-              <Typography localize="nameIsRequired" style="error" />
+              <Typography text="nameIsRequired" condition="error" />
             </div>
           )}
         </fieldset>
         <fieldset>
-          <label>{localize('piece')}</label>
+          <Label text={'piece'} />
+
           <select
             name="piece"
             ref={register({
@@ -69,7 +71,7 @@ export const PlayerForm = ({
           </select>
         </fieldset>
         <fieldset style={{ marginTop: 20 }}>
-          <Button type="submit">{localize('add')} </Button>
+          <Button text={localize('add')} type="submit" />
         </fieldset>
       </Box>
     </form>

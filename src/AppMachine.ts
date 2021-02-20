@@ -1,4 +1,4 @@
-import { Player } from '../entities/Player';
+import { Player } from './entities/Player';
 import {
   assign,
   Machine,
@@ -8,7 +8,10 @@ import {
   State,
   MachineConfig,
   MachineOptions,
+  send,
 } from 'xstate';
+import { init } from 'xstate/lib/actionTypes';
+import { evaluateGuard } from 'xstate/lib/utils';
 
 interface AppContext {
   dice: number;
@@ -64,7 +67,8 @@ type AppTransitions =
 
 type AppSchema = {
   states: {
-    startingNewGame: {};
+    checkIfGameIsReadyToStart: {};
+    settingUpNewGame: {};
     startTheGameAlready: {};
     playingTheGame: {};
     gameOver: {};
@@ -77,7 +81,7 @@ export const AppMachineConfig: MachineConfig<
   AppTransitions
 > = {
   id: 'machine',
-  initial: 'startingNewGame',
+  initial: 'settingUpNewGame',
   context: {
     dice: 1,
     players: [
@@ -86,25 +90,33 @@ export const AppMachineConfig: MachineConfig<
       { name: 'Jaymie', position: 1, piece: '♖', active: false },
       { name: 'Sydnie', position: 1, piece: '♗', active: false },
       { name: 'Luther', position: 1, piece: '♘', active: false },
-      { name: 'James', position: 1, piece: '♙', active: false },
     ],
     gameInProgress: false,
   },
   states: {
+    checkIfGameIsReadyToStart: {
+      on: {
+        '': [
+          { target: 'settingUpNewGame', cond: 'maxPlayersNotReached' },
+          { target: 'startTheGameAlready', cond: 'maxPlayersReached' },
+        ],
+      },
+    },
     startTheGameAlready: {
       on: {
         SETUP_GAME: {
-          target: 'startingNewGame',
+          target: 'settingUpNewGame',
         },
         START_GAME: {
           target: 'playingTheGame',
         },
       },
     },
-    startingNewGame: {
+    settingUpNewGame: {
       on: {
         ADD_PLAYER: {
-          actions: 'addPlayer',
+          target: 'checkIfGameIsReadyToStart',
+          actions: ['addPlayer'],
         },
         CHANGE_PLAYER_ORDER: {
           actions: 'changePlayerOrder',
@@ -129,7 +141,7 @@ export const AppMachineConfig: MachineConfig<
           actions: 'rollDice',
         },
         SETUP_GAME: {
-          target: 'startingNewGame',
+          target: 'settingUpNewGame',
         },
         END_GAME: 'gameOver',
       },
@@ -183,7 +195,10 @@ export const AppMachineOptions: Partial<MachineOptions<AppContext, any>> = {
         })),
     }),
   },
-  guards: {},
+  guards: {
+    maxPlayersReached: (context: AppContext) => context.players.length >= 6,
+    maxPlayersNotReached: (context: AppContext) => context.players.length < 6,
+  },
 };
 
 export const AppMachine = Machine<AppContext, AppSchema, AppTransitions>(
