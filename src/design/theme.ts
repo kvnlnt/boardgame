@@ -49,6 +49,16 @@ const tokens = {
 };
 
 const css = {
+  animate_fade_in_right: {
+    animationName: 'fadeInRight',
+    animationFillMode: 'both',
+    animationDuration: '1s',
+  },
+  animate_fade_out: {
+    animationName: 'fadeOut',
+    animationFillMode: 'both',
+    animationDuration: '1s',
+  },
   appearance_none: { appearance: 'none' },
   align_items_center: { alignItems: 'center' },
   bg_color_black_80: { backgroundColor: tokens.black_80 },
@@ -136,6 +146,17 @@ const css = {
   fs_2xl: { fontSize: '32px' },
   justify_content_center: { justifyContent: 'center' },
   justify_content_space_between: { justifyContent: 'space-between' },
+  opacity_0: { opacity: '0%' },
+  opacity_10: { opacity: '10%' },
+  opacity_20: { opacity: '20%' },
+  opacity_30: { opacity: '30%' },
+  opacity_40: { opacity: '40%' },
+  opacity_50: { opacity: '50%' },
+  opacity_60: { opacity: '60%' },
+  opacity_70: { opacity: '70%' },
+  opacity_80: { opacity: '80%' },
+  opacity_90: { opacity: '90%' },
+  opacity_100: { opacity: '100%' },
   padding_xs: { padding: '2px' },
   padding_s: { padding: '3px' },
   padding: { padding: '5px' },
@@ -231,6 +252,28 @@ export const GenerateCss = ({
     .join('\n');
 
 export const Css = `
+@keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        transform: translate3d(100%,0,0)
+    }
+    to {
+        opacity: 1;
+        transform: translateZ(0)
+    }
+}
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translate3d(100%,0,0)
+        visibility:visible
+    }
+    to {
+        opacity: 0;
+        transform: translateZ(0)
+        visibility:hidden
+    }
+}
 @media (min-width: ${tokens.mobile}){
   ${GenerateCss({})}
   ${GenerateCss({ suffix: '_on_hover', psuedoSelector: ':hover' })}

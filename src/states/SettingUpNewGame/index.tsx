@@ -29,16 +29,20 @@ export const SettingUpNewGame = ({ state, send }: SetupOptions) => {
     send(Transition.SET_ACTIVE_PLAYER, { player });
   const handleMove = (dir: 'up' | 'down', player: Player) =>
     send(Transition.CHANGE_PLAYER_ORDER, { player, dir });
-  const handleReady = () => send(Transition.PUSH_TO_START_GAME);
   const usedPieces = state.context.players.map((player) => player.piece);
   const availablePieces = PlayerPieces.filter(
     (piece) => !usedPieces.includes(piece)
   );
   return (
     <>
-      {availablePieces.length === 0 && (
+      {state.context.players.length === 6 && (
         <Toast
-          toasts={[{ message: 'youAreReady' }, { message: 'nameIsRequired' }]}
+          toasts={[
+            {
+              message: 'youAreReady',
+              buttons: [{ text: 'startGame', onClick: onStart }],
+            },
+          ]}
         />
       )}
       <div style={style.screen}>
@@ -49,7 +53,7 @@ export const SettingUpNewGame = ({ state, send }: SetupOptions) => {
           </div>
           <Menu onStart={onStart} />
         </div>
-        {availablePieces.length > 0 && (
+        {state.context.players.length < 6 && (
           <div style={style.form}>
             <PlayerForm
               pieces={availablePieces}
@@ -84,19 +88,18 @@ export const SettingUpNewGame = ({ state, send }: SetupOptions) => {
 const useStyles = (): { [key: string]: React.CSSProperties } => ({
   screen: {
     display: 'grid',
-    gridTemplateColumns: 'auto 1fr',
+    gridTemplateColumns: 'min-content auto',
     gridTemplateRows: 'min-content auto',
     gridTemplateAreas: `'header header' 'form players'`,
     width: '100vw',
     minHeight: '100vh',
     backgroundColor: theme.black_90,
-    gridGap: theme.space,
   },
   header: {
     gridArea: 'header',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'start',
     marginTop: 20,
     marginLeft: 20,
     marginRight: 20,

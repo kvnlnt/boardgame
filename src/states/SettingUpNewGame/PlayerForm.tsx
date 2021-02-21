@@ -76,7 +76,7 @@ export const PlayerForm = ({
           </Select>
         </Fieldset>
         <Fieldset>
-          <Button text={localize('add')} type="submit" />
+          <Button text="add" type="submit" />
         </Fieldset>
       </Box>
     </form>

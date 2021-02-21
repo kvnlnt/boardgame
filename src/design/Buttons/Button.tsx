@@ -1,9 +1,11 @@
 import React from 'react';
 import { atomize } from '../theme';
+import l10n from '../../lib/l10n';
+import { localize } from '~/lib/l10n/localize';
 
 export interface ButtonProps {
   onClick?: () => any;
-  text: React.ReactNode;
+  text: keyof typeof l10n;
   disabled?: boolean;
   type?: 'button' | 'submit';
 }
@@ -38,7 +40,7 @@ export const Button = ({
       )}
       onClick={handleClick}
     >
-      {text}
+      {localize(text)}
     </button>
   );
 };

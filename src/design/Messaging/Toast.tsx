@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { atomize, atoms } from '../theme';
 import l10n from '../../lib/l10n';
 import { localize } from '~/lib/l10n/localize';
+import { ButtonProps } from '../Buttons/Button';
+import { ButtonList } from '../Buttons/List';
 
 type conditions = 'normal' | 'info' | 'warning' | 'error' | 'success';
 
@@ -23,6 +25,7 @@ const bgColors: Record<conditions, atoms> = {
 
 interface ToastItemProps {
   message: keyof typeof l10n;
+  buttons?: ButtonProps[];
   condition?: conditions;
 }
 
@@ -37,10 +40,14 @@ export const Toast = ({ toasts }: ToastProps) => {
   if (toastsToShow.length === 0) return null;
   return (
     <div
-      className={atomize('position_fixed', 'margin_xl')}
+      className={atomize(
+        'position_fixed',
+        'margin_xl',
+        'animate_fade_in_right'
+      )}
       style={{ right: 0 }}
     >
-      {toastsToShow.map(({ message, condition = 'normal' }, idx) => (
+      {toastsToShow.map(({ message, condition = 'normal', buttons }, idx) => (
         <div
           key={idx}
           className={atomize(
@@ -54,9 +61,9 @@ export const Toast = ({ toasts }: ToastProps) => {
           <div className={atomize('padding_xl', colors[condition])}>
             {localize(message)}
           </div>
+          {buttons && <ButtonList buttons={buttons} />}
           <div
             className={atomize(
-              'margin_left_2xl',
               'cursor_pointer',
               'padding_y_l',
               'padding_x_xl',

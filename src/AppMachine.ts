@@ -24,7 +24,6 @@ export enum Transition {
   CHANGE_PLAYER_ORDER = 'CHANGE_PLAYER_ORDER',
   ROLL_DICE = 'ROLL_DICE',
   END_GAME = 'END_GAME',
-  PUSH_TO_START_GAME = 'PUSH_TO_START_GAME',
   SETUP_GAME = 'SETUP_GAME',
   START_GAME = 'START_GAME',
   REMOVE_PLAYER = 'REMOVE_PLAYER',
@@ -46,7 +45,6 @@ type TransitionChangePlayer = {
 };
 type TransitionDiceRoll = { type: Transition.ROLL_DICE; number: number };
 type TransitionSetup = { type: Transition.SETUP_GAME; screen: string };
-type TransitionReady = { type: Transition.PUSH_TO_START_GAME; screen: string };
 type TransitionGameStart = { type: Transition.START_GAME; screen: string };
 type TransitionGameEnd = { type: Transition.END_GAME; screen: string };
 type TransitionSetActivePlayer = {
@@ -58,7 +56,6 @@ type AppTransitions =
   | TransitionAddPlayer
   | TransitionChangePlayer
   | TransitionDiceRoll
-  | TransitionReady
   | TransitionSetup
   | TransitionGameStart
   | TransitionGameEnd
@@ -67,9 +64,7 @@ type AppTransitions =
 
 type AppSchema = {
   states: {
-    checkIfGameIsReadyToStart: {};
     settingUpNewGame: {};
-    startTheGameAlready: {};
     playingTheGame: {};
     gameOver: {};
   };
@@ -95,35 +90,13 @@ export const AppMachineConfig: MachineConfig<
     gameInProgress: false,
   },
   states: {
-    checkIfGameIsReadyToStart: {
-      on: {
-        '': [
-          { target: 'settingUpNewGame', cond: 'maxPlayersNotReached' },
-          { target: 'startTheGameAlready', cond: 'maxPlayersReached' },
-        ],
-      },
-    },
-    startTheGameAlready: {
-      on: {
-        SETUP_GAME: {
-          target: 'settingUpNewGame',
-        },
-        START_GAME: {
-          target: 'playingTheGame',
-        },
-      },
-    },
     settingUpNewGame: {
       on: {
         ADD_PLAYER: {
-          target: 'checkIfGameIsReadyToStart',
           actions: ['addPlayer'],
         },
         CHANGE_PLAYER_ORDER: {
           actions: 'changePlayerOrder',
-        },
-        PUSH_TO_START_GAME: {
-          target: 'startTheGameAlready',
         },
         START_GAME: {
           target: 'playingTheGame',

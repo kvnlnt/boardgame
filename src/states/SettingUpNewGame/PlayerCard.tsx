@@ -23,17 +23,17 @@ export const PlayerCard = ({
   buttons.push({
     disabled: moveUp === null,
     onClick: () => moveUp(player),
-    text: '↑',
+    text: 'up',
   });
   buttons.push({
     disabled: moveDown === null,
     onClick: () => moveDown(player),
-    text: '↓',
+    text: 'down',
   });
   buttons.push({
     disabled: player.active,
     onClick: () => onRemove(player),
-    text: 'X',
+    text: 'delete',
   });
   return (
     <div

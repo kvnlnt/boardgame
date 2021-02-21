@@ -8,7 +8,7 @@ interface PlayMenuProps {
 export const PlayMenu = ({ onSettingsClick }: PlayMenuProps) => {
   return (
     <div>
-      <Button onClick={onSettingsClick} text="⚙" />
+      <Button onClick={onSettingsClick} text="setup" />
     </div>
   );
 };

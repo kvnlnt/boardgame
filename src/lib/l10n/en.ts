@@ -13,4 +13,8 @@ export default {
   setup: 'Setup',
   startGame: 'Start Game',
   youAreReady: "You're Ready!!!",
+  up: 'up',
+  down: 'down',
+  close: 'close',
+  delete: 'delete',
 };
