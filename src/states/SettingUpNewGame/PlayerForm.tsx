@@ -1,11 +1,16 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Typography } from '../../design/Typography';
-import { Label } from '../../design/Label';
+import { Label } from '../../design/Forms/Label';
 import { Box } from '../../design/Layout/Box';
 import { localize } from '../../lib/l10n/localize';
 import { Player, PlayerPieces } from '../../entities/Player';
 import { Button } from '../../design/Buttons/Button';
+import { Fieldset } from '../../design/Forms/Fieldset';
+import { Legend } from '../../design/Forms/Legend';
+import { atomize } from '../../design/theme';
+import { Input } from '../../design/Forms/Input';
+import { Select } from '../../design/Forms/Select';
 
 interface PlayerFormOptions {
   players: Player[];
@@ -32,13 +37,14 @@ export const PlayerForm = ({
 
   return (
     <form onSubmit={handleSubmit(onFormSubmission)}>
-      <Typography text="addPlayer" fontSize="large" />
+      <Legend text="addPlayer" />
       <Box>
-        <fieldset>
+        <Fieldset>
           <Label text={'name'} />
-          <input
+          <Input
             name="name"
-            ref={register({
+            placeholder="playerName"
+            inputRef={register({
               required: true,
               validate: {
                 dupCheck,
@@ -46,33 +52,32 @@ export const PlayerForm = ({
             })}
           />
           {errors.name?.type === 'dupCheck' && (
-            <div style={{ padding: 10 }}>
+            <div className={atomize('padding_y_l')}>
               <Typography text="nameIsTaken" condition="error" />
             </div>
           )}
           {errors.name?.type === 'required' && (
-            <div style={{ padding: 10 }}>
+            <div className={atomize('padding_y_l')}>
               <Typography text="nameIsRequired" condition="error" />
             </div>
           )}
-        </fieldset>
-        <fieldset>
+        </Fieldset>
+        <Fieldset>
           <Label text={'piece'} />
-
-          <select
+          <Select
             name="piece"
-            ref={register({
+            selectRef={register({
               required: true,
             })}
           >
             {pieces.map((piece) => (
               <option key={piece}>{piece}</option>
             ))}
-          </select>
-        </fieldset>
-        <fieldset style={{ marginTop: 20 }}>
+          </Select>
+        </Fieldset>
+        <Fieldset>
           <Button text={localize('add')} type="submit" />
-        </fieldset>
+        </Fieldset>
       </Box>
     </form>
   );

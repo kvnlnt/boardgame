@@ -1,10 +1,10 @@
-import l10n from '../lib/l10n';
+import l10n from '../../lib/l10n';
 import React from 'react';
-import { atoms, atomize } from './theme';
+import { atoms, atomize } from '../theme';
 
 const fontSizes: { [key: string]: atoms } = {
   small: 'fs_s',
-  medium: 'fs_m',
+  medium: 'fs',
   large: 'fs_l',
   extraLarge: 'fs_xl',
 };
@@ -23,7 +23,9 @@ export const Label = ({
   return (
     <label
       className={atomize(
+        'display_block',
         'color_white',
+        'padding_bottom_l',
         fontSizes[fontSize],
         uppercase && 'textUppercase'
       )}

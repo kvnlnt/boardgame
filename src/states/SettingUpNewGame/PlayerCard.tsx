@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { atomize } from '~/design/theme';
 import { Player } from '~/entities/Player';
-import theme from '~/design/theme';
 import { ButtonProps } from '../../design/Buttons/Button';
 import { ButtonList } from '../../design/Buttons/List';
 
@@ -19,8 +19,6 @@ export const PlayerCard = ({
   moveDown,
   onClick,
 }: PlayerCardOpts) => {
-  const [hover, setHover] = useState<boolean>(false);
-  const style = useStyles({ hover, active: player.active });
   const buttons: ButtonProps[] = [];
   buttons.push({
     disabled: moveUp === null,
@@ -39,55 +37,24 @@ export const PlayerCard = ({
   });
   return (
     <div
-      style={{
-        ...style.card,
-        ...(player.active ? style.cardActive : style.cardHover),
-      }}
+      className={atomize(
+        'display_flex',
+        'flex_direction_row',
+        'justify_content_space_between',
+        'align_items_center',
+        'border_width_1',
+        'border_style_solid',
+        'border_color_white_05',
+        'padding_x_xl',
+        'cursor_pointer',
+        'bg_color_white_03_on_hover',
+        player.active && 'bg_color_white_05'
+      )}
       onClick={onClick}
-      onMouseOver={() => setHover(true)}
-      onMouseOut={() => setHover(false)}
     >
-      <div style={style.piece}>{player.piece}</div>
-      <div style={style.title}>{player.name}</div>
+      <div className={atomize('fs_2xl', 'color_white')}>{player.piece}</div>
+      <div className={atomize('fs_xl', 'color_white')}>{player.name}</div>
       <ButtonList buttons={buttons} />
     </div>
   );
 };
-
-const useStyles = ({
-  hover,
-  active,
-}): { [key: string]: React.CSSProperties } => ({
-  card: {
-    color: active ? theme.white : theme.white_40,
-    border: `1px solid ${theme.white_20}`,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '10px',
-    cursor: 'pointer',
-  },
-  cardHover: {
-    backgroundColor: hover ? theme.white_02 : 'transparent',
-  },
-  cardActive: {
-    backgroundColor: active ? theme.white_05 : 'transparent',
-  },
-  title: {
-    flex: 1,
-  },
-  piece: {
-    fontSize: 24,
-    paddingRight: 10,
-  },
-  button: {
-    width: 'max-content',
-    color: theme.white,
-    padding: 10,
-    backgroundColor: 'transparent',
-  },
-  buttonDisabled: {
-    color: theme.white_20,
-  },
-});

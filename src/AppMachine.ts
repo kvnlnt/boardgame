@@ -90,6 +90,7 @@ export const AppMachineConfig: MachineConfig<
       { name: 'Jaymie', position: 1, piece: '♖', active: false },
       { name: 'Sydnie', position: 1, piece: '♗', active: false },
       { name: 'Luther', position: 1, piece: '♘', active: false },
+      { name: 'James', position: 1, piece: '♘', active: false },
     ],
     gameInProgress: false,
   },

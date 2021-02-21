@@ -1,9 +1,11 @@
 export default {
+  '': '',
   add: 'Add',
   addPlayer: 'Add Player',
   piece: 'Piece',
   play: 'Play',
   players: 'Players',
+  playerName: 'Player Name',
   maxPlayersConfigured: "You're all setup and ready to go",
   name: 'Name',
   nameIsRequired: 'Name is required',

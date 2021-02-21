@@ -1,20 +1,12 @@
 import React from 'react';
-import theme from '~/design/theme';
+import { atomize } from '~/design/theme';
 
 export const Logo = () => {
   return (
-    <h1
-      style={{
-        fontSize: 24,
-        textTransform: 'uppercase',
-        fontWeight: 'normal',
-        wordBreak: 'break-all',
-        textAlign: 'center',
-        letterSpacing: 3,
-        color: theme.white,
-      }}
+    <div
+      className={atomize('fs_2xl', 'textUppercase', 'color_white', 'padding_l')}
     >
       Boardgame
-    </h1>
+    </div>
   );
 };

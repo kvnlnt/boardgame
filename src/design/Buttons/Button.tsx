@@ -25,7 +25,7 @@ export const Button = ({
       className={atomize(
         'border_style_solid',
         'border_width_1',
-        'fs_m',
+        'fs_s',
         'padding_x_2xl',
         'padding_y',
         'bg_color_trans',

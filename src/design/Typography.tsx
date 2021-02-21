@@ -4,7 +4,7 @@ import { atoms, atomize } from './theme';
 
 const fontSizes: { [key: string]: atoms } = {
   small: 'fs_s',
-  medium: 'fs_m',
+  medium: 'fs',
   large: 'fs_l',
   extraLarge: 'fs_xl',
 };

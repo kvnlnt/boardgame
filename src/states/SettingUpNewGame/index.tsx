@@ -9,8 +9,9 @@ import { Logo } from '../../design/Logo';
 import { PlayerForm } from './PlayerForm';
 import { PlayerCard } from './PlayerCard';
 import { Player, PlayerPieces } from '../../entities/Player';
-import theme from '../../design/theme';
+import theme, { atomize } from '../../design/theme';
 import { Typography } from '../../design/Typography';
+import { Toast } from '~/design/Messaging/Toast';
 
 interface SetupOptions {
   state: UseHookStateType;
@@ -34,45 +35,49 @@ export const SettingUpNewGame = ({ state, send }: SetupOptions) => {
     (piece) => !usedPieces.includes(piece)
   );
   return (
-    <div style={style.screen}>
-      <div style={style.header}>
-        <Logo />
-        <Typography text="setup" fontSize="normal" uppercase={true} />
-        {availablePieces.length === 0 && (
-          <div style={style.message}>
-            <Typography text="youAreReady" condition="success" />
+    <>
+      {availablePieces.length === 0 && (
+        <Toast
+          toasts={[{ message: 'youAreReady' }, { message: 'nameIsRequired' }]}
+        />
+      )}
+      <div style={style.screen}>
+        <div style={style.header}>
+          <Logo />
+          <div className={atomize('padding_bottom_xl')}>
+            <Typography text="setup" fontSize="normal" uppercase={true} />
+          </div>
+          <Menu onStart={onStart} />
+        </div>
+        {availablePieces.length > 0 && (
+          <div style={style.form}>
+            <PlayerForm
+              pieces={availablePieces}
+              players={state.context.players}
+              onSubmit={handlePlayerFormSubmit}
+            ></PlayerForm>
           </div>
         )}
-        <Menu onStart={onStart} />
+        {state.context.players && (
+          <div style={style.players}>
+            {state.context.players.map((player: Player, idx: number) => (
+              <PlayerCard
+                onRemove={handlePlayerRemoval}
+                onClick={() => handleSetPlayerActive(player)}
+                player={player}
+                key={player.name}
+                moveUp={idx === 0 ? null : () => handleMove('up', player)}
+                moveDown={
+                  idx === state.context.players.length - 1
+                    ? null
+                    : () => handleMove('down', player)
+                }
+              />
+            ))}
+          </div>
+        )}
       </div>
-      {availablePieces.length > 0 && (
-        <div style={style.form}>
-          <PlayerForm
-            pieces={availablePieces}
-            players={state.context.players}
-            onSubmit={handlePlayerFormSubmit}
-          ></PlayerForm>
-        </div>
-      )}
-      {state.context.players && (
-        <div style={style.players}>
-          {state.context.players.map((player: Player, idx: number) => (
-            <PlayerCard
-              onRemove={handlePlayerRemoval}
-              onClick={() => handleSetPlayerActive(player)}
-              player={player}
-              key={player.name}
-              moveUp={idx === 0 ? null : () => handleMove('up', player)}
-              moveDown={
-                idx === state.context.players.length - 1
-                  ? null
-                  : () => handleMove('down', player)
-              }
-            />
-          ))}
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 
@@ -98,9 +103,6 @@ const useStyles = (): { [key: string]: React.CSSProperties } => ({
   },
   form: {
     gridArea: 'form',
-    margin: 20,
-  },
-  message: {
     margin: 20,
   },
   players: {
