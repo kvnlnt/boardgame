@@ -1,4 +1,4 @@
-import { Player } from './entities/Player';
+import { Player } from './domain/entities/Player';
 import {
   assign,
   Machine,
@@ -8,10 +8,7 @@ import {
   State,
   MachineConfig,
   MachineOptions,
-  send,
 } from 'xstate';
-import { init } from 'xstate/lib/actionTypes';
-import { evaluateGuard } from 'xstate/lib/utils';
 
 interface AppContext {
   dice: number;

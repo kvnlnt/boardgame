@@ -2,13 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { useMachine } from '@xstate/react';
 import { AppMachine } from './AppMachine';
-import { PlayingTheGame } from './states/PlayingTheGame';
-import { SettingUpNewGame } from './states/SettingUpNewGame';
-import { CreateStyleSheet, Css } from './design/theme';
+import { PlayingTheGame } from './pages/PlayingTheGame';
+import { SettingUpNewGame } from './pages/SettingUpNewGame';
+import { RenderStyles } from './lib/styles';
+import { defaultTheme } from './design/themes';
 
 export const App = () => {
   const [state, send] = useMachine(AppMachine);
-  CreateStyleSheet(Css);
+  RenderStyles(defaultTheme);
   let screen;
   switch (state.value) {
     case 'settingUpNewGame':
